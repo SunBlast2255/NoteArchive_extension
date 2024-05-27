@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Notes",
-    "description": "Your personal note vault",
+    "description": "NoteArchive",
     "version": "1.0",
     "action": {
       "default_popup": "popup/popup.html"

@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    width: 400px;
+    height: 400px;
+}
+
+.wrapper{
+    width: 100%;
+    height: 100vh;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 100%;
+    height: 10%;
+    border-bottom: 1px solid rgb(202, 202, 202);
+}
+
+.main{
+    width: 100%;
+    height: 90%;
+}
+
+.flex{
+    display: flex;
+}
+
+.center{
+    justify-content: center;
+    align-items: center;
+}
+
+.column{
+    flex-direction: column;
+}
