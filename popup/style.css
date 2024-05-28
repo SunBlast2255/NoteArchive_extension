@@ -31,8 +31,6 @@ body{
 
     flex: center;
     justify-content: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .flex{
@@ -58,10 +56,32 @@ body{
     position: absolute;
     bottom: 0;
     left: 0;
-    margin: 5px;
+    margin: 10px;
 }
 
 .button-icon{
     width: 24px;
+    height: 24px;
+}
+
+.editor{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    background-color: white;
+}
+
+textarea{
+    width: 100%;
+    height: 100%;
+}
+
+button{
+    cursor: pointer;
+    width: 48px;
     height: 24px;
 }
