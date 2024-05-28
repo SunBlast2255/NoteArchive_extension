@@ -25,14 +25,17 @@ body{
     border-bottom: 1px solid rgb(202, 202, 202);
 }
 
-.main{
+.main {
     width: 100%;
-    height: 90%;
-
-    flex: center;
+    display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    overflow: auto;
 }
 
+.main div {
+    margin: 5px;
+}
 .flex{
     display: flex;
 }
@@ -86,4 +89,5 @@ button{
     cursor: pointer;
     width: 48px;
     height: 24px;
+    margin: 5px;
 }
