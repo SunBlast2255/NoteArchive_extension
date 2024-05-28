@@ -49,6 +49,9 @@ function openEditor(){
 }
 
 function closeEditor(){
+    document.getElementById("textarea").value = "";
+    document.getElementById("ch").innerHTML = "0";
+    document.getElementById("ln").innerHTML = "1";
     document.getElementById("editor-window").style.display = "none";
 }
 
@@ -71,6 +74,14 @@ function addNote(){
     });
 }
 
+function editNote(){
+
+}
+
+function ViewNote(){
+
+}
+
 function deleteNote(){
     
 }
@@ -89,11 +100,6 @@ document.getElementById("exit-btn").addEventListener("click", function(){
 
 document.getElementById("save-btn").addEventListener("click", function(){
     addNote();
-    closeEditor();
-});
-
-document.getElementById("del-btn").addEventListener("click", function(){
-    deleteNote();
     closeEditor();
 });
 
