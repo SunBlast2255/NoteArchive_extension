@@ -50,24 +50,10 @@ document.getElementById("del-btn").addEventListener("click", function(){
     closeEditor();
 });
 
-function countLines() {
-    const textarea = document.getElementById("textarea");
-    const lineHeight = parseFloat(window.getComputedStyle(textarea).lineHeight);
-    const totalHeight = textarea.scrollHeight;
-    const rows = textarea.rows;
-    
-    if (lineHeight && lineHeight !== 180) {
-        return Math.round(totalHeight / lineHeight);
-    } else {
-        return Math.round(totalHeight / rows);
-    }
-}
-
 document.getElementById("textarea").addEventListener("input", function(){
     let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
     document.getElementById("ch").innerHTML = chars;
 
     let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
     document.getElementById("ln").innerHTML = lines;
-    console.log(lines);
 });
