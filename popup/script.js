@@ -99,6 +99,13 @@ function openViewer(id){
     document.getElementById("viewer-window").style.display = "flex";
     chrome.storage.local.get(id, function(result) {
         document.getElementById("textarea-readonly").value = result[id];
+
+        let chars = document.getElementById("textarea-readonly").value.replace(/[\r\n]+/g, "").length;
+        document.getElementById("ch-total").innerHTML = chars;
+    
+    
+        let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
+        document.getElementById("ln-total").innerHTML = lines;
     });
 }
 
