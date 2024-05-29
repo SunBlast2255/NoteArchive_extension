@@ -89,6 +89,9 @@ function closeEditor(){
     document.getElementById("ch").innerHTML = "0";
     document.getElementById("ln").innerHTML = "1";
     document.getElementById("editor-window").style.display = "none";
+
+    editID = "";
+    editingMode = false;
 }
 
 function addNote(){
