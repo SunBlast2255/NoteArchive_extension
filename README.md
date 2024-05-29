@@ -12,3 +12,13 @@ When you click the create button, you will open the built-in editor where there 
 counter, character counter and two buttons to save, exit and input field.Just type the text 
 in the input box and click save to save the note. If you want to exit without saving, press 
 exit. *In this case the data will not be saved.
+
+Each note has 3 buttons. 
+
+- View
+- Edit
+- Delete
+
+If you click on the view button, it will open the note view window where you can view the whole text. If you click on the edit button, the editor opens where you can edit the text. To delete a note, click the delete button.
+
+*Author: SunBlast*

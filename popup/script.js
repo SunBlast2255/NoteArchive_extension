@@ -207,5 +207,4 @@ document.body.addEventListener('click', function(event) {
     }
 });
 
-
 //Yeah, yeah, I know. The code is a little lame, but I'll fix it later. The important thing is that it works.
