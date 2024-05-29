@@ -112,6 +112,9 @@ function openViewer(id){
 function closeViewer(){
     document.getElementById("viewer-window").style.display = "none";
     document.getElementById("textarea-readonly").value = "";
+
+    document.getElementById("ch-total").innerHTML = "0";
+    document.getElementById("ln-total").innerHTML = "0";
 }
 
 function deleteNote(id){
