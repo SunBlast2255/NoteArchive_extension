@@ -1,3 +1,6 @@
+let editingMode = false;
+let editID = "";
+
 function displayNote(){
     chrome.storage.local.get(["Count"]).then((result) => {
         if(result.Count == 0 || result.Count == undefined || result.Count == null){
@@ -14,6 +17,7 @@ function displayNote(){
             document.getElementById("note-container").innerHTML = "";
 
             let count;
+
             chrome.storage.local.get("Count", function(result) {
                 count = result.Count;
                 document.getElementById("notes").innerHTML = count;
@@ -39,6 +43,12 @@ function displayNote(){
                                 delIcon.title = "Delete";
                                 icons.appendChild(delIcon);
 
+                                let editIcon = document.createElement("img");
+                                editIcon.src = "../images/edit.png";
+                                editIcon.setAttribute("class", "icon-small edit");
+                                editIcon.title = "Edit";
+                                icons.appendChild(editIcon);
+
                                 let viewIcon = document.createElement("img");
                                 viewIcon.src = "../images/view.png";
                                 viewIcon.setAttribute("class", "icon-small view");
@@ -61,8 +71,17 @@ function getAllNotes(callback){
     });
 }
 
-function openEditor(){
+function openEditor(id){
+
     document.getElementById("editor-window").style.display = "flex";
+    
+    if(id){
+        chrome.storage.local.get(id, function(result) {
+            document.getElementById("textarea").value = result[id];
+        });
+    }else{
+        document.getElementById("textarea").value = "";
+    }
 }
 
 function closeEditor(){
@@ -73,26 +92,44 @@ function closeEditor(){
 }
 
 function addNote(){
-    let date = new Date();
 
-    let text = document.getElementById("textarea").value;
-    let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
+    if(editingMode == false){
+        let date = new Date();
 
-    let note = {};
-    note[noteId] = text;
+        let text = document.getElementById("textarea").value;
+        let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
 
-    chrome.storage.local.set(note, function(){
-        chrome.storage.local.get("Count", function(result) {
-            let count = parseInt(result.Count) + 1;
-            chrome.storage.local.set({"Count": count}, function(){
-                displayNote();
+        let note = {};
+        note[noteId] = text;
+
+        chrome.storage.local.set(note, function(){
+            chrome.storage.local.get("Count", function(result) {
+                let count = parseInt(result.Count) + 1;
+                chrome.storage.local.set({"Count": count}, function(){
+                    displayNote();
+                });
             });
         });
-    });
+    }else if(editingMode == true){
+
+        let text = document.getElementById("textarea").value;
+        let noteId = editID;
+
+        let note = {};
+        note[noteId] = text;
+
+        chrome.storage.local.set(note, function(){
+            displayNote();
+            editID = "";
+            editingMode = false;
+        });
+    }
 }
 
-function editNote(){
-
+function editNote(id){
+    editingMode = true;
+    editID = id;
+    openEditor(id);
 }
 
 function openViewer(id){
@@ -164,6 +201,9 @@ document.body.addEventListener('click', function(event) {
     }else if(event.target.classList.contains("view")){
         let id = event.target.parentNode.parentNode.id;
         openViewer(id);
+    }else if(event.target.classList.contains("edit")){
+        let id = event.target.parentNode.parentNode.id;
+        editNote(id);
     }
 });
 
