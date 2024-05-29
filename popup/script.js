@@ -29,10 +29,21 @@ function displayNote(){
                                 span.innerHTML = notes[noteId];
                                 div.appendChild(span);
 
-                                let icon = document.createElement("img");
-                                icon.src = "../images/delete.png";
-                                icon.setAttribute("class", "icon-small");
-                                div.appendChild(icon);
+                                let icons = document.createElement("div");
+                                icons.setAttribute("class", "icon-block flex center");
+                                div.appendChild(icons);
+
+                                let delIcon = document.createElement("img");
+                                delIcon.src = "../images/delete.png";
+                                delIcon.setAttribute("class", "icon-small delete");
+                                delIcon.title = "Delete";
+                                icons.appendChild(delIcon);
+
+                                let viewIcon = document.createElement("img");
+                                viewIcon.src = "../images/view.png";
+                                viewIcon.setAttribute("class", "icon-small view");
+                                viewIcon.title = "View";
+                                icons.appendChild(viewIcon);
 
                                 document.getElementById("note-container").appendChild(div);
                             }
@@ -84,12 +95,27 @@ function editNote(){
 
 }
 
-function ViewNote(){
-
+function openViewer(id){
+    document.getElementById("viewer-window").style.display = "flex";
+    chrome.storage.local.get(id, function(result) {
+        document.getElementById("textarea-readonly").value = result[id];
+    });
 }
 
-function deleteNote(){
-    
+function closeViewer(){
+    document.getElementById("viewer-window").style.display = "none";
+    document.getElementById("textarea-readonly").value = "";
+}
+
+function deleteNote(id){
+    chrome.storage.local.remove(id, function(){
+        chrome.storage.local.get("Count", function(result) {
+            let count = result.Count - 1;
+            chrome.storage.local.set({"Count": count}, function(){
+                displayNote();
+            });
+        });
+    });
 }
 
 window.onload = function() {
@@ -100,8 +126,12 @@ document.getElementById("add-btn").addEventListener("click", function(){
     openEditor();
 });
 
-document.getElementById("exit-btn").addEventListener("click", function(){
+document.getElementById("exit-editor-btn").addEventListener("click", function(){
     closeEditor();
+});
+
+document.getElementById("exit-viewer-btn").addEventListener("click", function(){
+    closeViewer();
 });
 
 document.getElementById("save-btn").addEventListener("click", function(){
@@ -118,15 +148,14 @@ document.getElementById("textarea").addEventListener("input", function(){
 });
 
 document.body.addEventListener('click', function(event) {
-    if (event.target.classList.contains('icon-small')) {
-        let id = event.target.parentNode.id;
-        chrome.storage.local.remove(id, function(){
-            chrome.storage.local.get("Count", function(result) {
-                let count = result.Count - 1;
-                chrome.storage.local.set({"Count": count}, function(){
-                    displayNote();
-                });
-            });
-        });
+    if (event.target.classList.contains("delete")) {
+        let id = event.target.parentNode.parentNode.id;
+        deleteNote(id);
+    }else if(event.target.classList.contains("view")){
+        let id = event.target.parentNode.parentNode.id;
+        openViewer(id);
     }
 });
+
+
+//Yeah, yeah, I know. The code is a little lame, but I'll fix it later. The important thing is that it works.

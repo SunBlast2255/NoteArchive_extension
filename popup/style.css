@@ -79,16 +79,31 @@ body{
 }
 
 .icon-small{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 5px;
     width: 16px;
     height: 16px;
     cursor: pointer;
 }
 
+.icon-block{
+    gap:5px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 5px;
+}
+
 .editor{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    background-color: white;
+}
+
+.viewer{
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -122,7 +137,7 @@ button{
     border: 1px solid black;
     border-radius: 5px;
     overflow: hidden;
-    margin-top: 5px;
+    margin: 5px;
     padding: 5px;
     flex-direction: column;
     flex-wrap: wrap;
