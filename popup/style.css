@@ -146,6 +146,5 @@ button{
 .note span {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-word;
+    white-space: pre-wrap;
 }
