@@ -21,13 +21,19 @@ function displayNote(){
                 getAllNotes(function(notes) {
                         for (let noteId in notes) {
                             if (notes.hasOwnProperty(noteId) && noteId !== "Count") {
-                                console.log('Note ID:', noteId, 'Text:', notes[noteId]);
-
                                 let div = document.createElement("div");
-                                div.style = "display: flex; width: 100px; height: 100px; border: 1px solid black; border-radius: 5px; text-overflow: ellipsis; overflow: hidden; cursor: pointer; margin-top: 5px;";
+                                div.setAttribute("class", "note");
+                                div.setAttribute("id", noteId);
+
                                 let span = document.createElement("span");
                                 span.innerHTML = notes[noteId];
                                 div.appendChild(span);
+
+                                let icon = document.createElement("img");
+                                icon.src = "../images/delete.png";
+                                icon.setAttribute("class", "icon-small");
+                                div.appendChild(icon);
+
                                 document.getElementById("note-container").appendChild(div);
                             }
                         }
@@ -109,4 +115,18 @@ document.getElementById("textarea").addEventListener("input", function(){
 
     let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
     document.getElementById("ln").innerHTML = lines;
+});
+
+document.body.addEventListener('click', function(event) {
+    if (event.target.classList.contains('icon-small')) {
+        let id = event.target.parentNode.id;
+        chrome.storage.local.remove(id, function(){
+            chrome.storage.local.get("Count", function(result) {
+                let count = result.Count - 1;
+                chrome.storage.local.set({"Count": count}, function(){
+                    displayNote();
+                });
+            });
+        });
+    }
 });
