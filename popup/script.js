@@ -78,6 +78,12 @@ function openEditor(id){
     if(id){
         chrome.storage.local.get(id, function(result) {
             document.getElementById("textarea").value = result[id];
+
+            let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
+            document.getElementById("ch").innerHTML = chars;
+        
+            let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
+            document.getElementById("ln").innerHTML = lines;
         });
     }else{
         document.getElementById("textarea").value = "";

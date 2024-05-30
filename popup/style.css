@@ -117,8 +117,6 @@ body{
 textarea{
     width: 100%;
     height: 100%;
-    border: 0;
-    white-space: pre;
     resize: none;
 }
 
@@ -131,6 +129,8 @@ button{
 
 .note {
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     position: relative;
     width: 100px;
     height: 100px;
@@ -139,13 +139,11 @@ button{
     overflow: hidden;
     margin: 5px;
     padding: 5px;
-    flex-direction: column;
-    flex-wrap: wrap;
 }
 
 .note span {
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: pre-wrap;
+    white-space: wrap;
     word-break: break-all;
+    max-height: 70px;
 }
