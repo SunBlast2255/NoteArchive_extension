@@ -147,4 +147,5 @@ button{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre-wrap;
+    word-break: break-all;
 }
