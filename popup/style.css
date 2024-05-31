@@ -43,10 +43,6 @@ body{
     overflow: auto;
 }
 
-.main div {
-    margin: 5px;
-}
-
 .flex{
     display: flex;
 }
