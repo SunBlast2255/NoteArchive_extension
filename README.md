@@ -21,4 +21,4 @@ Each note has 3 buttons.
 
 If you click on the view button, it will open the note view window where you can view the whole text. If you click on the edit button, the editor opens where you can edit the text. To delete a note, click the delete button.
 
-*Author: SunBlast*
+

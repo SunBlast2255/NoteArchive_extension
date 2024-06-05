@@ -1,6 +1,9 @@
+
+//---Variables---
 let editingMode = false;
 let editID = "";
 
+//---functions---
 function displayNote(){
     chrome.storage.local.get(["Count"]).then((result) => {
         if(result.Count == 0 || result.Count == undefined || result.Count == null){
@@ -41,18 +44,21 @@ function displayNote(){
                                 delIcon.src = "../images/delete.png";
                                 delIcon.setAttribute("class", "icon-small delete");
                                 delIcon.title = "Delete";
+                                delIcon.alt = "Del";
                                 icons.appendChild(delIcon);
 
                                 let editIcon = document.createElement("img");
                                 editIcon.src = "../images/edit.png";
                                 editIcon.setAttribute("class", "icon-small edit");
                                 editIcon.title = "Edit";
+                                editIcon.alt = "Edit";
                                 icons.appendChild(editIcon);
 
                                 let viewIcon = document.createElement("img");
                                 viewIcon.src = "../images/view.png";
                                 viewIcon.setAttribute("class", "icon-small view");
                                 viewIcon.title = "View";
+                                viewIcon.alt = "View";
                                 icons.appendChild(viewIcon);
 
                                 document.getElementById("note-container").appendChild(div);
@@ -69,35 +75,6 @@ function getAllNotes(callback){
     chrome.storage.local.get(null, function(result) {
         callback(result);
     });
-}
-
-function openEditor(id){
-
-    document.getElementById("editor-window").style.display = "flex";
-    
-    if(id){
-        chrome.storage.local.get(id, function(result) {
-            document.getElementById("textarea").value = result[id];
-
-            let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
-            document.getElementById("ch").innerHTML = chars;
-        
-            let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
-            document.getElementById("ln").innerHTML = lines;
-        });
-    }else{
-        document.getElementById("textarea").value = "";
-    }
-}
-
-function closeEditor(){
-    document.getElementById("textarea").value = "";
-    document.getElementById("ch").innerHTML = "0";
-    document.getElementById("ln").innerHTML = "1";
-    document.getElementById("editor-window").style.display = "none";
-
-    editID = "";
-    editingMode = false;
 }
 
 function addNote(){
@@ -141,6 +118,48 @@ function editNote(id){
     openEditor(id);
 }
 
+function deleteNote(id){
+    chrome.storage.local.remove(id, function(){
+        chrome.storage.local.get("Count", function(result) {
+            let count = result.Count - 1;
+            chrome.storage.local.set({"Count": count}, function(){
+                displayNote();
+            });
+        });
+    });
+}
+
+function openEditor(id){
+
+    document.getElementById("editor-window").style.display = "flex";
+    
+    if(id){
+        chrome.storage.local.get(id, function(result) {
+            document.getElementById("textarea").value = result[id];
+
+            let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
+            document.getElementById("ch").innerHTML = chars;
+        
+            let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
+            document.getElementById("ln").innerHTML = lines;
+        });
+    }else{
+        document.getElementById("textarea").value = "";
+    }
+}
+
+
+function closeEditor(){
+    document.getElementById("textarea").value = "";
+    document.getElementById("ch").innerHTML = "0";
+    document.getElementById("ln").innerHTML = "1";
+    document.getElementById("editor-window").style.display = "none";
+
+    editID = "";
+    editingMode = false;
+}
+
+
 function openViewer(id){
     document.getElementById("viewer-window").style.display = "flex";
     chrome.storage.local.get(id, function(result) {
@@ -163,16 +182,7 @@ function closeViewer(){
     document.getElementById("ln-total").innerHTML = "0";
 }
 
-function deleteNote(id){
-    chrome.storage.local.remove(id, function(){
-        chrome.storage.local.get("Count", function(result) {
-            let count = result.Count - 1;
-            chrome.storage.local.set({"Count": count}, function(){
-                displayNote();
-            });
-        });
-    });
-}
+//---Listeners---
 
 window.onload = function() {
     displayNote();
@@ -215,5 +225,3 @@ document.body.addEventListener('click', function(event) {
         editNote(id);
     }
 });
-
-//Yeah, yeah, I know. The code is a little lame, but I'll fix it later. The important thing is that it works.

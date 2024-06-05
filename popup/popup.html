@@ -8,31 +8,34 @@
 <body>
     <div class="wrapper">
 
-        <div class="header">
+        <!--Menu-->
 
+        <header>
             <div class="flex column">
                 <h2>NoteArchive</h2>
-                <h4>V 1.0</h4>
+                <h3>V 1.0</h3>
             </div>
 
             <div class="flex center">
                 <span>Total notes: <span id="notes">0</span> </span>
             </div>
-        </div>
+        </header>
 
-        <div class="flex main">
+        <main class="flex main">
             <div class="note-container" id="note-container">
-
+                <!--Notes will appear here-->
             </div>
-        </div>
 
-        <div class="flex center add-btn" id="add-btn" title="Create a new note">
-            <img class="icon" src="../images/new.png">
-        </div>
+            <button class="add-btn" id="add-btn" title="Create a new note">
+                <img class="icon-big" src="../images/new.png" alt="New">
+            </button>
+        </main>
 
-        <div class="editor" id="editor-window">
-            <div class="header">
 
+        <!--Editor-->
+
+        <div class="modal" id="editor-window">
+            <header>
                 <div class="flex center">
                     <button id="save-btn">Save</button>
                     <button id="exit-editor-btn">Cancel</button>
@@ -41,15 +44,17 @@
                 <div class="flex center">
                     <span>Ln: <span id="ln">1</span>, Char: <span id="ch">0</span> </span>
                 </div>
-            </div>
+            </header>
 
-            <div class="main">
+            <div class="modal-main">
                 <textarea id="textarea" placeholder="Type something in here..."></textarea>
             </div>
         </div>
 
-        <div class="viewer" id="viewer-window">
-            <div class="header">
+        <!--Viewer-->
+
+        <div class="modal" id="viewer-window">
+            <header>
                 <div class="flex center">
                     <button id="exit-viewer-btn">Cancel</button>
                 </div>
@@ -57,9 +62,9 @@
                 <div class="flex center">
                     <span>Ln: <span id="ln-total">1</span>, Char: <span id="ch-total">0</span> </span>
                 </div>
-            </div>
+            </header>
 
-            <div class="main">
+            <div class="modal-main">
                 <textarea readonly id="textarea-readonly"></textarea>
             </div>
         </div>

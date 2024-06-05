@@ -15,32 +15,40 @@ body{
     height: 100vh;
 }
 
-.header{
-    display: flex;
-    justify-content: space-between;
-    padding-left: 5px;
-    padding-right: 5px;
+header{
     width: 100%;
     height: 10%;
+
+    display: flex;
+    justify-content: space-between;
+
+
+    padding-left: 5px;
+    padding-right: 5px;
     border-bottom: 1px solid rgb(202, 202, 202);
 }
 
-.main {
+main, .modal-main {
     width: 100%;
     height: 90%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     overflow: hidden;
 }
 
 .note-container{
     display: flex;
     justify-content: center;
+    align-self: center;
     flex-wrap: wrap;
     overflow: auto;
 
     width: 100%;
     height: fit-content;
     max-height: 100%;
-    overflow: auto;
 }
 
 .flex{
@@ -56,58 +64,22 @@ body{
     flex-direction: column;
 }
 
+/*Buttons and text inputs*/
+
 .add-btn{
     width: 48px;
     height: 48px;
+
+    border: 0;
     border-radius: 50%;
+    margin: 10px;
+
     background-color: lightgrey;
     cursor: pointer;
 
     position: absolute;
     bottom: 0;
     left: 0;
-    margin: 10px;
-}
-
-.icon{
-    width: 24px;
-    height: 24px;
-}
-
-.icon-small{
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-.icon-block{
-    gap:5px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 5px;
-}
-
-.editor{
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    display: none;
-    flex-direction: column;
-    background-color: white;
-}
-
-.viewer{
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    display: none;
-    flex-direction: column;
-    background-color: white;
 }
 
 textarea{
@@ -123,23 +95,68 @@ button{
     margin: 5px;
 }
 
+/*Icons*/
+
+.icon-big{
+    width: 24px;
+    height: 24px;
+}
+
+.icon-small{
+    width: 16px;
+    height: 16px;
+
+    cursor: pointer;
+}
+
+.icon-block{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    gap:5px;
+    margin: 5px;
+}
+
+/*Modal windows*/
+
+.modal{
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: none;
+    flex-direction: column;
+
+    background-color: white;
+}
+
+/*Blocks*/
+
 .note {
+    width: 100px;
+    height: 100px;
+
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+
     position: relative;
-    width: 100px;
-    height: 100px;
-    border: 1px solid black;
-    border-radius: 5px;
-    overflow: hidden;
     margin: 5px;
     padding: 5px;
+
+    border: 1px solid black;
+    border-radius: 5px;
+
+    overflow: hidden;
 }
 
 .note span {
     overflow: hidden;
-    white-space: wrap;
+    white-space: pre-wrap;
     word-break: break-all;
     max-height: 70px;
 }
