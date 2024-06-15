@@ -12,7 +12,7 @@ function displayNote(){
 
             let span = document.createElement("span");
             span.innerHTML = "You have no notes";
-            span.style = "margin: 5px; font-size: 16px;"
+            span.style = "margin: 5px; font-size: 16px; color: #D4D4D4;"
             document.getElementById("note-container").appendChild(span);
 
             chrome.storage.local.set({"Count": "0" }, function(){});
