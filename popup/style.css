@@ -174,3 +174,18 @@ button{
     word-break: break-all;
     max-height: 70px;
 }
+
+/*Scroll*/
+
+* {
+    scrollbar-color: #414141 #282828;
+}
+
+*::-webkit-scrollbar-track {
+    background: #282828;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #414141;
+}
+  
