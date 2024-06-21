@@ -11,31 +11,31 @@
         <!--Menu-->
 
         <header>
-            <div class="flex column">
-                <h2>NoteArchive</h2>
-                <h3>V 1.1</h3>
-            </div>
-
-            <div class="flex center">
+            <div class="flex center column">
+                <h2>NoteArchive 1.2</h2>
                 <span>Total notes: <span id="notes">0</span> </span>
             </div>
         </header>
 
         <main class="flex main">
+
+            <div class="toolbar">
+                <button id="add-btn">Create</button>
+                <button id="del-all">Delete all</button>
+                <button id="settings-btn">Settings</button>
+                <button id="exit-btn">Exit</button>
+            </div>
+
             <div class="note-container" id="note-container">
                 <!--Notes will appear here-->
             </div>
-
-            <button class="add-btn" id="add-btn" title="Create a new note">
-                <img class="icon-big" src="../images/new.png" alt="New">
-            </button>
         </main>
 
 
         <!--Editor-->
 
         <div class="modal" id="editor-window">
-            <header>
+            <div class="header-modal">
                 <div class="flex center" style="gap: 5px;">
                     <button id="save-btn">Save</button>
                     <button id="exit-editor-btn">Cancel</button>
@@ -44,7 +44,7 @@
                 <div class="flex center">
                     <span>Ln: <span id="ln">1</span>, Char: <span id="ch">0</span> </span>
                 </div>
-            </header>
+            </div>
 
             <div class="modal-main">
                 <textarea id="textarea" placeholder="Type something in here..."></textarea>
@@ -54,7 +54,7 @@
         <!--Viewer-->
 
         <div class="modal" id="viewer-window">
-            <header>
+            <div class="header-modal">
                 <div class="flex center">
                     <button id="exit-viewer-btn">Cancel</button>
                 </div>
@@ -62,10 +62,30 @@
                 <div class="flex center">
                     <span>Ln: <span id="ln-total">1</span>, Char: <span id="ch-total">0</span> </span>
                 </div>
-            </header>
+            </div>
 
             <div class="modal-main">
                 <textarea readonly id="textarea-readonly"></textarea>
+            </div>
+        </div>
+
+        <!--Settings-->
+
+        <div class="modal" id="settings-window">
+            <header class="header-modal">
+                <div class="flex center">
+                    <h1>Settings</h1>
+                </div>
+
+                <div class="flex center">
+                    <button id="apply-btn">Apply</button>
+                </div>
+            </header>
+
+            <div class="modal-main">
+                <div class="flex center column">
+                    <!--Put settings here-->
+                </div>
             </div>
         </div>
 

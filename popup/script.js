@@ -129,6 +129,23 @@ function deleteNote(id){
     });
 }
 
+function delAll(){
+    getAllNotes(function(notes) {
+        let keysToRemove = [];
+        for (let noteId in notes) {
+            if (notes.hasOwnProperty(noteId) && noteId !== "Count") {
+                keysToRemove.push(noteId);
+            }
+        }
+        
+        chrome.storage.local.remove(keysToRemove, function() {
+            chrome.storage.local.set({"Count": 0}, function(){
+                displayNote();
+            });
+        });
+    });
+}
+
 function openEditor(id){
 
     document.getElementById("editor-window").style.display = "flex";
@@ -182,6 +199,18 @@ function closeViewer(){
     document.getElementById("ln-total").innerHTML = "0";
 }
 
+function openSettings(){
+    document.getElementById("settings-window").style.display = "flex";
+}
+
+function closeSettings(){
+    document.getElementById("settings-window").style.display = "none";
+}
+
+function exit(){
+    window.close();
+}
+
 //---Listeners---
 
 window.onload = function() {
@@ -191,6 +220,23 @@ window.onload = function() {
 document.getElementById("add-btn").addEventListener("click", function(){
     openEditor();
 });
+
+document.getElementById("del-all").addEventListener("click", function(){
+    delAll();
+});
+
+document.getElementById("settings-btn").addEventListener("click", function(){
+    openSettings();
+});
+
+document.getElementById("apply-btn").addEventListener("click", function(){
+    closeSettings();
+});
+
+document.getElementById("exit-btn").addEventListener("click", function(){
+    exit();
+});
+
 
 document.getElementById("exit-editor-btn").addEventListener("click", function(){
     closeEditor();
