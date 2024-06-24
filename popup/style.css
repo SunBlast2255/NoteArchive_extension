@@ -96,6 +96,20 @@ main, .modal-main {
     flex-direction: column;
 }
 
+/*Text*/
+
+.big{
+    font-size: 24px;
+}
+
+.mid{
+    font-size: 22px;
+}
+
+small{
+    font-size: 18px;
+}
+
 /*Buttons and text inputs*/
 
 .add-btn{
@@ -126,6 +140,7 @@ textarea{
     border-radius: 0;
 
     padding: 5px;
+    overflow: auto;
 }
 
 button{
@@ -136,6 +151,16 @@ button{
     border: 0;
     background-color:#414141;
     color: #D4D4D4;
+}
+
+input[type="checkbox"]{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+input[type="number"]{
+    width: 64px;
 }
 
 /*Icons*/
@@ -202,6 +227,13 @@ button{
     white-space: pre-wrap;
     word-break: break-all;
     max-height: 70px;
+}
+
+.settings-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
 }
 
 /*Scroll*/

@@ -3,6 +3,9 @@
 let editingMode = false;
 let editID = "";
 
+let hyphenation;
+let fontSize;
+
 //---functions---
 function displayNote(){
     chrome.storage.local.get(["Count"]).then((result) => {
@@ -16,6 +19,7 @@ function displayNote(){
             document.getElementById("note-container").appendChild(span);
 
             chrome.storage.local.set({"Count": "0" }, function(){});
+
         }else if(result.Count > 0 && result.Count != undefined && result.Count != null){
             document.getElementById("note-container").innerHTML = "";
 
@@ -27,7 +31,7 @@ function displayNote(){
 
                 getAllNotes(function(notes) {
                         for (let noteId in notes) {
-                            if (notes.hasOwnProperty(noteId) && noteId !== "Count") {
+                            if (notes.hasOwnProperty(noteId) && noteId !== "Count" && noteId !== "Size" && noteId !== "Hyphenation") {
                                 let div = document.createElement("div");
                                 div.setAttribute("class", "note");
                                 div.setAttribute("id", noteId);
@@ -64,10 +68,25 @@ function displayNote(){
                                 document.getElementById("note-container").appendChild(div);
                             }
                         }
-                });
-                
+                });    
             });
+
         }
+    });
+}
+
+function loadSettings(){
+    chrome.storage.local.get(["Size", "Hyphenation"], function(result) {
+        if(!result.Size || result.Hyphenation == undefined || result.Hyphenation == null){
+            chrome.storage.local.set({"Size": "16" }, function(){});
+            chrome.storage.local.set({"Hyphenation": "off" }, function(){});
+            fontSize = 16;
+            hyphenation = "off";
+        }else if(result.Size && result.Hyphenation){
+            fontSize = result.Size;
+            hyphenation = result.Hyphenation;
+        }
+
     });
 }
 
@@ -200,11 +219,33 @@ function closeViewer(){
 }
 
 function openSettings(){
+    document.getElementById("font-size").value = fontSize;
+    document.getElementById("hyphenation").checked = hyphenation === "on";
     document.getElementById("settings-window").style.display = "flex";
 }
 
-function closeSettings(){
-    document.getElementById("settings-window").style.display = "none";
+async function closeSettings(){
+    fontSize = parseInt(document.getElementById("font-size").value);
+    hyphenation = document.getElementById("hyphenation").checked ? "on" : "off";
+
+    try {
+        await chrome.storage.local.set({"Size": fontSize, "Hyphenation": hyphenation });
+        document.getElementById("settings-window").style.display = "none";
+    } catch (error) {}
+
+    document.querySelectorAll("textarea").forEach((textarea) => {
+        textarea.style.fontSize = `${fontSize}px`;
+        textarea.setAttribute("wrap", hyphenation);
+    });
+
+}
+
+function countTextarea(){
+    let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
+    document.getElementById("ch").innerHTML = chars;
+
+    let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
+    document.getElementById("ln").innerHTML = lines;
 }
 
 function exit(){
@@ -215,6 +256,7 @@ function exit(){
 
 window.onload = function() {
     displayNote();
+    loadSettings();
 }
 
 document.getElementById("add-btn").addEventListener("click", function(){
@@ -252,11 +294,7 @@ document.getElementById("save-btn").addEventListener("click", function(){
 });
 
 document.getElementById("textarea").addEventListener("input", function(){
-    let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
-    document.getElementById("ch").innerHTML = chars;
-
-    let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
-    document.getElementById("ln").innerHTML = lines;
+    countTextarea();
 });
 
 document.body.addEventListener('click', function(event) {

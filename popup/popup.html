@@ -47,7 +47,7 @@
             </div>
 
             <div class="modal-main">
-                <textarea id="textarea" placeholder="Type something in here..."></textarea>
+                <textarea wrap="off" id="textarea" placeholder="Type something in here..."></textarea>
             </div>
         </div>
 
@@ -65,7 +65,7 @@
             </div>
 
             <div class="modal-main">
-                <textarea readonly id="textarea-readonly"></textarea>
+                <textarea wrap="off" readonly id="textarea-readonly"></textarea>
             </div>
         </div>
 
@@ -83,8 +83,15 @@
             </header>
 
             <div class="modal-main">
-                <div class="flex center column">
-                    <!--Put settings here-->
+                <div class="flex center column" style="padding: 5px; gap: 10px;">
+                    <div class="settings-item">
+                        <label class="mid" for="font-size">Font-size:</label>
+                        <input type="number" id="font-size" title="Set font-size for textarea (px)">
+                    </div>
+                    <div class="settings-item">
+                        <label class="mid" for="word-wrap">Hyphenation:</label>
+                        <input type="checkbox" id="hyphenation" title="Turn on/off hyphenation for textarea">
+                    </div>
                 </div>
             </div>
         </div>
