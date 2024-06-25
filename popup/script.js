@@ -87,6 +87,11 @@ function loadSettings(){
             hyphenation = result.Hyphenation;
         }
 
+        document.querySelectorAll("textarea").forEach((textarea) => {
+            textarea.style.fontSize = `${fontSize}px`;
+            textarea.setAttribute("wrap", hyphenation);
+        });
+
     });
 }
 
