@@ -68,7 +68,6 @@ main, .modal-main {
     gap:5px;
 
     background-color: #282828;
-
 }
 
 .note-container{
@@ -110,23 +109,15 @@ small{
     font-size: 18px;
 }
 
-/*Buttons and text inputs*/
-
-.add-btn{
-    width: 48px;
-    height: 48px;
-
-    border: 0;
-    border-radius: 50%;
-    margin: 10px;
-
-    background-color: #282828;
-    cursor: pointer;
-
-    position: absolute;
-    bottom: 0;
-    left: 0;
+label{
+    user-select: none;
 }
+
+h1, h2, h3, h4, h5, h6, span, a, p{
+    user-select: none;
+}
+
+/*Buttons and text inputs*/
 
 textarea{
     width: 100%;
@@ -151,6 +142,7 @@ button{
     border: 0;
     background-color:#414141;
     color: #D4D4D4;
+    user-select: none;
 }
 
 input[type="checkbox"]{
@@ -164,6 +156,10 @@ input[type="number"]{
 }
 
 /*Icons*/
+
+img{
+    user-select: none;
+}
 
 .icon-big{
     width: 24px;
