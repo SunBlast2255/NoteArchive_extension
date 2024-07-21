@@ -305,7 +305,6 @@ document.getElementById("exit-btn").addEventListener("click", function(){
     exit();
 });
 
-
 document.getElementById("exit-editor-btn").addEventListener("click", function(){
     closeEditor();
 });
@@ -369,20 +368,47 @@ window.onclick = function () {
     document.getElementById("textarea").style.cursor = "auto"
 };
 
-document.getElementById("copy-context").addEventListener("click", function(event) {
-    //code here
+document.getElementById("copy-context").addEventListener("click", function() {
+    let textarea = document.getElementById("textarea");
+    let selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+
+    navigator.clipboard.writeText(selectedText);
 });
 
-document.getElementById("paste-context").addEventListener("click", function(event) {
-    //code here
+document.getElementById("paste-context").addEventListener("click", async function() {
+    try {
+        let clipboardText = await navigator.clipboard.readText();
+        
+        let textarea = document.getElementById('textarea');
+        let start = textarea.selectionStart;
+        let end = textarea.selectionEnd;
+
+        let currentValue = textarea.value;
+
+        textarea.value = currentValue.slice(0, start) + clipboardText + currentValue.slice(end);
+        
+        let newPosition = start + clipboardText.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+    } catch (err) {
+        console.error('Ошибка при чтении из буфера обмена:', err);
+    }
 });
 
-document.getElementById("cut-context").addEventListener("click", function(event) {
-    //code here
+document.getElementById("cut-context").addEventListener("click", async function() {
+    try {
+        let textarea = document.getElementById('textarea');
+        let start = textarea.selectionStart;
+        let end = textarea.selectionEnd;
+        let cutText = textarea.value.slice(start, end);
+
+        await navigator.clipboard.writeText(cutText);
+        textarea.value = textarea.value.slice(0, start) + textarea.value.slice(end);
+        textarea.selectionStart = textarea.selectionEnd = start;
+    } catch (err) {}
 });
 
-document.getElementById("select-context").addEventListener("click", function(event) {
-    //code here
+document.getElementById("select-context").addEventListener("click", function() {
+    document.getElementById("textarea").select();
 });
 
 document.body.addEventListener("click", function(event) {
