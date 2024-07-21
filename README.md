@@ -30,4 +30,15 @@ Each note has 3 buttons.
 
 If you click on the view button, it will open the note view window where you can view the whole text. If you click on the edit button, the editor opens where you can edit the text. To delete a note, click the delete button.
 
+# Working with the context menu
 
+In edit mode, you can open the context menu by right-clicking anywhere in the input field. It has several functions:
+
+- Undo
+- Redo
+- Copy
+- Paste
+- Cut
+- Select All
+
+To select a function, simply click on it in the context menu. Click anywhere to close the context menu.

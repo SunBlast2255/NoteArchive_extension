@@ -10,14 +10,14 @@
 
         <!--Menu-->
 
-        <header>
+        <header id="header">
             <div class="flex center column">
-                <h2>NoteArchive 1.2</h2>
+                <h2>NoteArchive 1.3</h2>
                 <span>Total notes: <span id="notes">0</span> </span>
             </div>
         </header>
 
-        <main class="flex main">
+        <main class="flex main" id="main">
 
             <div class="toolbar">
                 <button id="add-btn">Create</button>
@@ -37,8 +37,8 @@
         <div class="modal" id="editor-window">
             <div class="header-modal">
                 <div class="flex center" style="gap: 5px;">
-                    <button id="save-btn">Save</button>
                     <button id="exit-editor-btn">Cancel</button>
+                    <button id="save-btn">Save</button>
                 </div>
     
                 <div class="flex center">
@@ -55,8 +55,9 @@
 
         <div class="modal" id="viewer-window">
             <div class="header-modal">
-                <div class="flex center">
+                <div class="flex center" style="gap:5px;">
                     <button id="exit-viewer-btn">Cancel</button>
+                    <button id="copy-viewer-text">Copy</button>
                 </div>
 
                 <div class="flex center">
@@ -95,7 +96,27 @@
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="context-menu" id="context">
+        <div class="context-menu-item" id="select-context">
+            <span>Undo</span>
+        </div>
+        <div class="context-menu-item" id="select-context">
+            <span>Redo</span>
+        </div>
+        <div class="context-menu-item" id="copy-context">
+            <span>Copy</span>
+        </div>
+        <div class="context-menu-item" id="paste-context">
+            <span>Paste</span>
+        </div>
+        <div class="context-menu-item" id="cut-context">
+            <span>Cut</span>
+        </div>
+        <div class="context-menu-item" id="select-context">
+            <span>Select All</span>
+        </div>
     </div>
 
     <script src="script.js"></script>

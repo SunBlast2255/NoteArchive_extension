@@ -187,6 +187,9 @@ function openEditor(id){
     }else{
         document.getElementById("textarea").value = "";
     }
+
+    document.getElementById("header").style.display = "none";
+    document.getElementById("main").style.display = "none";
 }
 
 
@@ -198,6 +201,9 @@ function closeEditor(){
 
     editID = "";
     editingMode = false;
+
+    document.getElementById("header").style.display = "flex";
+    document.getElementById("main").style.display = "flex";
 }
 
 
@@ -212,6 +218,13 @@ function openViewer(id){
         let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
         document.getElementById("ln-total").innerHTML = lines;
     });
+
+    document.getElementById("header").style.display = "none";
+    document.getElementById("main").style.display = "none";
+}
+
+function copyViewerText(){
+    navigator.clipboard.writeText(document.getElementById("textarea-readonly").value);
 }
 
 function closeViewer(){
@@ -220,12 +233,18 @@ function closeViewer(){
 
     document.getElementById("ch-total").innerHTML = "0";
     document.getElementById("ln-total").innerHTML = "0";
+
+    document.getElementById("header").style.display = "flex";
+    document.getElementById("main").style.display = "flex";
 }
 
 function openSettings(){
     document.getElementById("font-size").value = fontSize;
     document.getElementById("hyphenation").checked = hyphenation === "on";
     document.getElementById("settings-window").style.display = "flex";
+
+    document.getElementById("header").style.display = "none";
+    document.getElementById("main").style.display = "none";
 }
 
 async function closeSettings(){
@@ -241,6 +260,9 @@ async function closeSettings(){
         textarea.style.fontSize = `${fontSize}px`;
         textarea.setAttribute("wrap", hyphenation);
     });
+
+    document.getElementById("header").style.display = "flex";
+    document.getElementById("main").style.display = "flex";
 
 }
 
@@ -301,7 +323,69 @@ document.getElementById("textarea").addEventListener("input", function(){
     countTextarea();
 });
 
-document.body.addEventListener('click', function(event) {
+document.getElementById("copy-viewer-text").addEventListener("click", function(){
+    copyViewerText();
+});
+
+window.oncontextmenu = function(){
+    return false;
+}
+
+document.getElementById("textarea").oncontextmenu = function (e) {
+    e.preventDefault();
+
+    let context = document.getElementById("context");
+    
+    let clickX = e.pageX + 5;
+    let clickY = e.pageY + 5;
+
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    let menuWidth = context.offsetWidth;
+    let menuHeight = context.offsetHeight;
+
+    if ((clickX + menuWidth) > windowWidth) {
+        context.style.left = (windowWidth - menuWidth) + "px";
+    } else {
+        context.style.left = clickX + "px";
+    }
+
+    if ((clickY + menuHeight) > windowHeight) {
+        context.style.top = (windowHeight - menuHeight) + "px";
+    } else {
+        context.style.top = clickY + "px";
+    }
+
+    context.style.display = "flex";
+
+    document.getElementById("textarea").style.cursor = "default"
+
+    return false;
+};
+
+window.onclick = function () {
+    document.getElementById("context").style.display = "none";
+    document.getElementById("textarea").style.cursor = "auto"
+};
+
+document.getElementById("copy-context").addEventListener("click", function(event) {
+    //code here
+});
+
+document.getElementById("paste-context").addEventListener("click", function(event) {
+    //code here
+});
+
+document.getElementById("cut-context").addEventListener("click", function(event) {
+    //code here
+});
+
+document.getElementById("select-context").addEventListener("click", function(event) {
+    //code here
+});
+
+document.body.addEventListener("click", function(event) {
     if (event.target.classList.contains("delete")) {
         let id = event.target.parentNode.parentNode.id;
         deleteNote(id);
