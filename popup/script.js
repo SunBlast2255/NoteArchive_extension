@@ -107,6 +107,7 @@ function addNote(){
         let date = new Date();
 
         let text = document.getElementById("textarea").value;
+
         let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
 
         let note = {};
@@ -314,6 +315,12 @@ document.getElementById("exit-viewer-btn").addEventListener("click", function(){
 });
 
 document.getElementById("save-btn").addEventListener("click", function(){
+    let text = document.getElementById("textarea").value;
+
+    if(text === ""){
+        return;
+    }
+
     addNote();
     closeEditor();
 });

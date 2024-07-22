@@ -64,7 +64,8 @@ main, .modal-main {
     justify-content: center;
 
     width: 100%;
-    height: 50px;
+    min-height: 35px;
+    max-height: 35px;
     gap:5px;
 
     background-color: #282828;
