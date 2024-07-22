@@ -34,8 +34,6 @@ If you click on the view button, it will open the note view window where you can
 
 In edit mode, you can open the context menu by right-clicking anywhere in the input field. It has several functions:
 
-- Undo
-- Redo
 - Copy
 - Paste
 - Cut
