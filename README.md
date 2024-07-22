@@ -1,5 +1,5 @@
 # What is NoteArchive?
-NoteArchive is an extension for Google Chrome browser where you can create, edit, delete notes.
+NoteArchive is an extension for Google Chrome, Opera where you can create, edit, delete notes. The extension is still under development, please let me know if you find any bugs.
 # How do I install the extension?
 The extension can be installed from the official Chrome Extension Store or downloaded right here in the releases section.
 Link to the extension: <link here>
