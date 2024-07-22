@@ -335,8 +335,8 @@ document.getElementById("textarea").oncontextmenu = function (e) {
 
     let context = document.getElementById("context");
     
-    let clickX = e.pageX + 5;
-    let clickY = e.pageY + 5;
+    let clickX = e.pageX + 15;
+    let clickY = e.pageY + 15;
 
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
@@ -389,9 +389,7 @@ document.getElementById("paste-context").addEventListener("click", async functio
         
         let newPosition = start + clipboardText.length;
         textarea.setSelectionRange(newPosition, newPosition);
-    } catch (err) {
-        console.error('Ошибка при чтении из буфера обмена:', err);
-    }
+    } catch (err) {}
 });
 
 document.getElementById("cut-context").addEventListener("click", async function() {
@@ -423,3 +421,5 @@ document.body.addEventListener("click", function(event) {
         editNote(id);
     }
 });
+
+//Yeah... That shit
