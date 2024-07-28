@@ -5,8 +5,23 @@ NoteArchive is an extension for Google Chrome, Opera where you can create, edit,
 ![Editor](images/Screenshots/12tFekV6KG.png)
 
 # How do I install the extension?
-The extension can be installed from the official Chrome Extension Store or downloaded right here in the releases section.
-Link to the extension: <link here>
+You can download the extension in the release section.
+
+1)Open Chrome or Opera: Ensure you have the Chrome or Opera browser open.
+
+2)Go to Extensions Page:
+- For Chrome: Enter chrome://extensions in the address bar.
+- For Opera: Enter opera://extensions in the address bar.
+
+3)Enable Developer Mode: On the Extensions page, toggle the switch for Developer mode in the top-right corner.
+
+4)Unzip the Extension: If your extension is in a zipped archive, extract the contents to a folder on your computer.
+
+5)Load Unpacked Extension:
+- Click the Load unpacked button.
+- Navigate to the directory where you extracted the extension.
+- Select the folder and click Select Folder (or Open).
+  
 # What's in here?
 When you first open the extension, you'll see a button on the bottom left to add a new note. 
 On the top right you will see a counter for your notes. And on the top left you will see 
