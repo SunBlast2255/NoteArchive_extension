@@ -267,6 +267,14 @@ async function closeSettings(){
 
 }
 
+function openDonateModal(){
+    document.getElementById("donate-modal").style.display = "flex";
+}
+
+function closeDonateModal(){
+    document.getElementById("donate-modal").style.display = "none";
+}
+
 function countTextarea(){
     let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
     document.getElementById("ch").innerHTML = chars;
@@ -292,6 +300,14 @@ document.getElementById("add-btn").addEventListener("click", function(){
 
 document.getElementById("del-all").addEventListener("click", function(){
     delAll();
+});
+
+document.getElementById("donate-btn").addEventListener("click", function(){
+    openDonateModal();
+});
+
+document.getElementById("donate-btn-close").addEventListener("click", function(){
+    closeDonateModal();
 });
 
 document.getElementById("settings-btn").addEventListener("click", function(){
@@ -331,6 +347,10 @@ document.getElementById("textarea").addEventListener("input", function(){
 
 document.getElementById("copy-viewer-text").addEventListener("click", function(){
     copyViewerText();
+});
+
+document.getElementById("address-ETH").addEventListener("click", function(e){
+    navigator.clipboard.writeText("0x663271fD500052041Ce2D73d24aB7e779D7b0F92")
 });
 
 window.oncontextmenu = function(){

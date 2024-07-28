@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
 }
 
 body{
@@ -58,14 +59,23 @@ main, .modal-main {
     color: #D4D4D4;
 }
 
+.title{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+
+    width: 50%;
+    height: fit-content;
+}
+
 .toolbar{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
 
-    width: 100%;
-    min-height: 35px;
-    max-height: 35px;
+    width: 50%;
+    height: fit-content;
     gap:5px;
 
     background-color: #282828;
@@ -110,12 +120,13 @@ small{
     font-size: 18px;
 }
 
-label{
-    user-select: none;
+.address{
+    font-size: 16px;
+    cursor: pointer;
 }
 
-h1, h2, h3, h4, h5, h6, span, a, p{
-    user-select: none;
+.text-align-center{
+    text-align: center;
 }
 
 /*Buttons and text inputs*/
@@ -160,6 +171,7 @@ input[type="number"]{
 
 img{
     user-select: none;
+    cursor: pointer;
 }
 
 .icon-big{
@@ -170,8 +182,6 @@ img{
 .icon-small{
     width: 16px;
     height: 16px;
-
-    cursor: pointer;
 }
 
 .icon-block{
@@ -181,6 +191,11 @@ img{
 
     gap:5px;
     margin: 5px;
+}
+
+.Qr-code{
+    width: 250px;
+    height: 250px;
 }
 
 /*Modal windows*/

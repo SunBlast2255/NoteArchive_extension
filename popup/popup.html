@@ -11,21 +11,21 @@
         <!--Menu-->
 
         <header id="header">
-            <div class="flex center column">
-                <h2>NoteArchive 1.3</h2>
+            <div class="title">
+                <h2>NoteArchive 1.4</h2>
                 <span>Total notes: <span id="notes">0</span> </span>
+            </div>
+
+            <div class="toolbar">
+                <img id="add-btn" class="icon-big" title="New" alt="New" src="../images/new.png">
+                <img id="del-all" class="icon-big" title="Delete all" alt="Delete all" src="../images/dell-all.png">
+                <img id="settings-btn" class="icon-big" title="Settings" alt="Settings" src="../images/settings.png">
+                <img id="donate-btn" class="icon-big" title="Donate" alt="Donate" src="../images/donate.png">
+                <img id="exit-btn" class="icon-big" title="Exit" alt="Exit" src="../images/exit.png">
             </div>
         </header>
 
         <main class="flex main" id="main">
-
-            <div class="toolbar">
-                <button id="add-btn">Create</button>
-                <button id="del-all">Delete all</button>
-                <button id="settings-btn">Settings</button>
-                <button id="exit-btn">Exit</button>
-            </div>
-
             <div class="note-container" id="note-container">
                 <!--Notes will appear here-->
             </div>
@@ -36,9 +36,9 @@
 
         <div class="modal" id="editor-window">
             <div class="header-modal">
-                <div class="flex center" style="gap: 5px;">
-                    <button id="exit-editor-btn">Cancel</button>
-                    <button id="save-btn">Save</button>
+                <div class="flex center" style="gap: 10px;">
+                    <img id="exit-editor-btn" class="icon-big" title="Close" alt="Close" src="../images/close.png">
+                    <img id="save-btn" class="icon-big" title="Save" alt="Save" src="../images/save.png">
                 </div>
     
                 <div class="flex center">
@@ -55,9 +55,9 @@
 
         <div class="modal" id="viewer-window">
             <div class="header-modal">
-                <div class="flex center" style="gap:5px;">
-                    <button id="exit-viewer-btn">Cancel</button>
-                    <button id="copy-viewer-text">Copy</button>
+                <div class="flex center" style="gap: 10px;">
+                    <img id="exit-viewer-btn" class="icon-big" title="Close" alt="Close" src="../images/close.png">
+                    <img id="copy-viewer-text" class="icon-big" title="Copy" alt="Copy" src="../images/copy.png">
                 </div>
 
                 <div class="flex center">
@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="flex center">
-                    <button id="apply-btn">Apply</button>
+                    <img id="apply-btn" class="icon-big" title="Apply" alt="Apply" src="../images/apply.png">
                 </div>
             </header>
 
@@ -97,6 +97,32 @@
             </div>
         </div>
     </div>
+
+    <!--Donate-->
+    <div class="modal" id="donate-modal">
+        <div class="header-modal">
+            <div class="flex center">
+                <h1>Donate</h1>
+            </div>
+
+            <div class="flex center">
+                <img id="donate-btn-close" class="icon-big" title="Apply" alt="Apply" src="../images/apply.png">
+            </div>
+        </div>
+
+        <div class="modal-main">
+            <h1>Support Our Project ♡</h1>
+            <p class="text-align-center">            
+                If you enjoy our extension, please consider making a donation. Your support helps us improve and develop it further.
+                Donations are accepted via cryptocurrency. Thank you!
+            </p>
+
+            <img class="Qr-code" src="../images/QR/ETH.png">
+            <span class="address" id="address-ETH" title="Click to copy">0x663271fD500052041Ce2D73d24aB7e779D7b0F92</span>
+        </div>
+    </div>
+
+    <!--Context-->
 
     <div class="context-menu" id="context">
         <div class="context-menu-item" id="copy-context">
