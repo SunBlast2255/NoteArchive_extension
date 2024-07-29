@@ -268,11 +268,7 @@ async function closeSettings(){
 }
 
 function openDonateModal(){
-    document.getElementById("donate-modal").style.display = "flex";
-}
-
-function closeDonateModal(){
-    document.getElementById("donate-modal").style.display = "none";
+    chrome.tabs.create({ url: '../tabs/donate.html' });
 }
 
 function countTextarea(){
@@ -304,10 +300,6 @@ document.getElementById("del-all").addEventListener("click", function(){
 
 document.getElementById("donate-btn").addEventListener("click", function(){
     openDonateModal();
-});
-
-document.getElementById("donate-btn-close").addEventListener("click", function(){
-    closeDonateModal();
 });
 
 document.getElementById("settings-btn").addEventListener("click", function(){
