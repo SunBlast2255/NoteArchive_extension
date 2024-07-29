@@ -341,10 +341,6 @@ document.getElementById("copy-viewer-text").addEventListener("click", function()
     copyViewerText();
 });
 
-document.getElementById("address-ETH").addEventListener("click", function(e){
-    navigator.clipboard.writeText("0x663271fD500052041Ce2D73d24aB7e779D7b0F92")
-});
-
 window.oncontextmenu = function(){
     return false;
 }
