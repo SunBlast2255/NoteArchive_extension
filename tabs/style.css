@@ -55,6 +55,7 @@ span{
 .QR{
     width: 300px;
     height: 300px;
+    user-select: none;
 }
 
 .address{
