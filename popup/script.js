@@ -349,6 +349,8 @@ document.getElementById("textarea").oncontextmenu = function (e) {
     e.preventDefault();
 
     let context = document.getElementById("context");
+
+    context.style.display = "flex";
     
     let clickX = e.pageX + 15;
     let clickY = e.pageY + 15;
@@ -371,11 +373,7 @@ document.getElementById("textarea").oncontextmenu = function (e) {
         context.style.top = clickY + "px";
     }
 
-    context.style.display = "flex";
-
     document.getElementById("textarea").style.cursor = "default"
-
-    return false;
 };
 
 window.onclick = function () {
