@@ -1,9 +1,3 @@
-
-//---Variables---
-let editingMode = false;
-let editID = "";
-
-//---functions---
 function displayNote(){
     chrome.storage.local.get(["Count"]).then((result) => {
         if(result.Count == 0 || result.Count == undefined || result.Count == null){
@@ -28,7 +22,7 @@ function displayNote(){
 
                 getAllNotes(function(notes) {
                         for (let noteId in notes) {
-                            if (notes.hasOwnProperty(noteId) && noteId !== "Count" && noteId !== "Size" && noteId !== "Hyphenation") {
+                            if (notes.hasOwnProperty(noteId) && noteId !== "Count" && noteId !== "Size" && noteId !== "Hyphenation" && noteId !== "editID" && noteId !== "editingMode") {
                                 let div = document.createElement("div");
                                 div.setAttribute("class", "note");
                                 div.setAttribute("id", noteId);
@@ -78,8 +72,6 @@ function getAllNotes(callback){
     });
 }
 
-//Editor
-
 function openEditor(id){
 
     document.getElementById("editor-window").style.display = "flex";
@@ -102,21 +94,17 @@ function openEditor(id){
     document.getElementById("main").style.display = "none";
 }
 
-
 function closeEditor(){
     document.getElementById("textarea").value = "";
     document.getElementById("ch").innerHTML = "0";
     document.getElementById("ln").innerHTML = "1";
     document.getElementById("editor-window").style.display = "none";
 
-    editID = "";
-    editingMode = false;
+    chrome.storage.local.set({"editID": "", "editingMode": false}, function(){});
 
     document.getElementById("header").style.display = "flex";
     document.getElementById("main").style.display = "flex";
 }
-
-//---Listeners---
 
 window.onload = function() {
     displayNote();
@@ -138,6 +126,8 @@ window.onload = function() {
         });
 
     });
+
+    chrome.storage.local.set({"editID": "", "editingMode": false}, function(){});
 }
 
 document.getElementById("add-btn").addEventListener("click", function(){
@@ -224,40 +214,45 @@ document.getElementById("save-btn").addEventListener("click", function(){
         return;
     }
 
-    if(editingMode == false){
-        let date = new Date();
+    chrome.storage.local.get(["editID", "editingMode"], function(result){
+        let editingMode = result.editingMode;
+        let editID = result.editID;
 
-        let text = document.getElementById("textarea").value;
-
-        let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
-
-        let note = {};
-        note[noteId] = text;
-
-        chrome.storage.local.set(note, function(){
-            chrome.storage.local.get("Count", function(result) {
-                let count = parseInt(result.Count) + 1;
-                chrome.storage.local.set({"Count": count}, function(){
-                    displayNote();
+        if(editingMode == false){
+            let date = new Date();
+    
+            let text = document.getElementById("textarea").value;
+    
+            let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
+    
+            let note = {};
+            note[noteId] = text;
+    
+            chrome.storage.local.set(note, function(){
+                chrome.storage.local.get("Count", function(result) {
+                    let count = parseInt(result.Count) + 1;
+                    chrome.storage.local.set({"Count": count}, function(){
+                        displayNote();
+                    });
                 });
             });
-        });
-    }else if(editingMode == true){
+        }else if(editingMode == true){
 
-        let text = document.getElementById("textarea").value;
-        let noteId = editID;
+            let text = document.getElementById("textarea").value;
+            let noteId = editID;
+    
+            let note = {};
+            note[noteId] = text;
+    
+            chrome.storage.local.set(note, function(){
+                displayNote();
+                chrome.storage.local.set({"editingMode": false, "editID": ""}, function(){});
+            });
+        }
+    
+        closeEditor();
 
-        let note = {};
-        note[noteId] = text;
-
-        chrome.storage.local.set(note, function(){
-            displayNote();
-            editID = "";
-            editingMode = false;
-        });
-    }
-
-    closeEditor();
+    });
 });
 
 document.getElementById("textarea").addEventListener("input", function(){
@@ -273,7 +268,7 @@ document.getElementById("copy-viewer-text").addEventListener("click", function()
 });
 
 window.oncontextmenu = function(){
-    return false;
+    //return false;
 }
 
 document.getElementById("textarea").oncontextmenu = function (e) {
@@ -383,7 +378,7 @@ document.body.addEventListener("click", function(event) {
         document.getElementById("main").style.display = "none";
     }else if(event.target.classList.contains("edit")){
         let id = event.target.parentNode.parentNode.id;
-        editingMode = true; editID = id;
+        chrome.storage.local.set({"editingMode": true, "editID": id}, function(){});
         openEditor(id);
     }
 });
