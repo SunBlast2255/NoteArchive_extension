@@ -150,15 +150,18 @@ textarea{
     overflow: auto;
 }
 
-button{
-    width: 72px;
-    height: 24px;
-
+button {
     cursor: pointer;
     border: 0;
-    background-color:#414141;
+    background-color: #414141;
     color: #D4D4D4;
     user-select: none;
+    padding: 5px 10px;
+}
+
+button:hover {
+    background-color: #585858;
+    color: #FFFFFF;
 }
 
 input[type="checkbox"]{

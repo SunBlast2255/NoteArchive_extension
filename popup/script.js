@@ -3,9 +3,6 @@
 let editingMode = false;
 let editID = "";
 
-let hyphenation;
-let fontSize;
-
 //---functions---
 function displayNote(){
     chrome.storage.local.get(["Count"]).then((result) => {
@@ -75,101 +72,13 @@ function displayNote(){
     });
 }
 
-function loadSettings(){
-    chrome.storage.local.get(["Size", "Hyphenation"], function(result) {
-        if(!result.Size || result.Hyphenation == undefined || result.Hyphenation == null){
-            chrome.storage.local.set({"Size": "16" }, function(){});
-            chrome.storage.local.set({"Hyphenation": "off" }, function(){});
-            fontSize = 16;
-            hyphenation = "off";
-        }else if(result.Size && result.Hyphenation){
-            fontSize = result.Size;
-            hyphenation = result.Hyphenation;
-        }
-
-        document.querySelectorAll("textarea").forEach((textarea) => {
-            textarea.style.fontSize = `${fontSize}px`;
-            textarea.setAttribute("wrap", hyphenation);
-        });
-
-    });
-}
-
 function getAllNotes(callback){
     chrome.storage.local.get(null, function(result) {
         callback(result);
     });
 }
 
-function addNote(){
-
-    if(editingMode == false){
-        let date = new Date();
-
-        let text = document.getElementById("textarea").value;
-
-        let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
-
-        let note = {};
-        note[noteId] = text;
-
-        chrome.storage.local.set(note, function(){
-            chrome.storage.local.get("Count", function(result) {
-                let count = parseInt(result.Count) + 1;
-                chrome.storage.local.set({"Count": count}, function(){
-                    displayNote();
-                });
-            });
-        });
-    }else if(editingMode == true){
-
-        let text = document.getElementById("textarea").value;
-        let noteId = editID;
-
-        let note = {};
-        note[noteId] = text;
-
-        chrome.storage.local.set(note, function(){
-            displayNote();
-            editID = "";
-            editingMode = false;
-        });
-    }
-}
-
-function editNote(id){
-    editingMode = true;
-    editID = id;
-    openEditor(id);
-}
-
-function deleteNote(id){
-    chrome.storage.local.remove(id, function(){
-        chrome.storage.local.get("Count", function(result) {
-            let count = result.Count - 1;
-            chrome.storage.local.set({"Count": count}, function(){
-                displayNote();
-            });
-        });
-    });
-}
-
-function delAll(){
-    getAllNotes(function(notes) {
-        let keysToRemove = [];
-        for (let noteId in notes) {
-            if (notes.hasOwnProperty(noteId) && noteId !== "Count") {
-                keysToRemove.push(noteId);
-            }
-        }
-        
-        chrome.storage.local.remove(keysToRemove, function() {
-            chrome.storage.local.set({"Count": 0}, function(){
-                displayNote();
-            });
-        });
-    });
-}
+//Editor
 
 function openEditor(id){
 
@@ -207,28 +116,97 @@ function closeEditor(){
     document.getElementById("main").style.display = "flex";
 }
 
+//---Listeners---
 
-function openViewer(id){
-    document.getElementById("viewer-window").style.display = "flex";
-    chrome.storage.local.get(id, function(result) {
-        document.getElementById("textarea-readonly").value = result[id];
-
-        let chars = document.getElementById("textarea-readonly").value.replace(/[\r\n]+/g, "").length;
-        document.getElementById("ch-total").innerHTML = chars;
+window.onload = function() {
+    displayNote();
     
-        let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
-        document.getElementById("ln-total").innerHTML = lines;
+    chrome.storage.local.get(["Size", "Hyphenation"], function(result) {
+        if(!result.Size || result.Hyphenation == undefined || result.Hyphenation == null){
+            chrome.storage.local.set({"Size": "16" }, function(){});
+            chrome.storage.local.set({"Hyphenation": "off" }, function(){});
+            fontSize = 16;
+            hyphenation = "off";
+        }else if(result.Size && result.Hyphenation){
+            fontSize = result.Size;
+            hyphenation = result.Hyphenation;
+        }
+
+        document.querySelectorAll("textarea").forEach((textarea) => {
+            textarea.style.fontSize = `${fontSize}px`;
+            textarea.setAttribute("wrap", hyphenation);
+        });
+
     });
-
-    document.getElementById("header").style.display = "none";
-    document.getElementById("main").style.display = "none";
 }
 
-function copyViewerText(){
-    navigator.clipboard.writeText(document.getElementById("textarea-readonly").value);
-}
+document.getElementById("add-btn").addEventListener("click", function(){
+    openEditor();
+});
 
-function closeViewer(){
+document.getElementById("del-all").addEventListener("click", function(){
+    getAllNotes(function(notes) {
+        let keysToRemove = [];
+        for (let noteId in notes) {
+            if (notes.hasOwnProperty(noteId) && noteId !== "Count") {
+                keysToRemove.push(noteId);
+            }
+        }
+        
+        chrome.storage.local.remove(keysToRemove, function() {
+            chrome.storage.local.set({"Count": 0}, function(){
+                displayNote();
+            });
+        });
+    });
+});
+
+document.getElementById("donate-btn").addEventListener("click", function(){
+    chrome.tabs.create({ url: '../tabs/donate.html' });
+});
+
+document.getElementById("settings-btn").addEventListener("click", function(){
+    chrome.storage.local.get(["Size", "Hyphenation"], function(result){
+        document.getElementById("font-size").value = parseInt(result.Size);
+        document.getElementById("hyphenation").checked = result.Hyphenation === "on";
+        document.getElementById("settings-window").style.display = "flex";
+    
+        document.getElementById("header").style.display = "none";
+        document.getElementById("main").style.display = "none";
+    });
+});
+
+document.getElementById("apply-btn").addEventListener("click", function(){
+    let fontSize = parseInt(document.getElementById("font-size").value);
+    let hyphenation = document.getElementById("hyphenation").checked ? "on" : "off";
+
+    chrome.storage.local.set({"Size": fontSize, "Hyphenation": hyphenation}, function(){
+        document.querySelectorAll("textarea").forEach((textarea) => {
+            textarea.style.fontSize = `${fontSize}px`;
+            textarea.setAttribute("wrap", hyphenation);
+        });
+    
+        document.getElementById("settings-window").style.display = "none";
+
+        document.getElementById("header").style.display = "flex";
+        document.getElementById("main").style.display = "flex";
+    });
+});
+
+document.getElementById("reset-settings").addEventListener("click", function(){
+    document.getElementById("font-size").value = 16;
+    document.getElementById("hyphenation").checked = false;
+});
+
+document.getElementById("exit-btn").addEventListener("click", function(){
+    window.close();
+});
+
+document.getElementById("exit-editor-btn").addEventListener("click", function(){
+    closeEditor();
+});
+
+document.getElementById("exit-viewer-btn").addEventListener("click", function(){
     document.getElementById("viewer-window").style.display = "none";
     document.getElementById("textarea-readonly").value = "";
 
@@ -237,89 +215,6 @@ function closeViewer(){
 
     document.getElementById("header").style.display = "flex";
     document.getElementById("main").style.display = "flex";
-}
-
-function openSettings(){
-    document.getElementById("font-size").value = fontSize;
-    document.getElementById("hyphenation").checked = hyphenation === "on";
-    document.getElementById("settings-window").style.display = "flex";
-
-    document.getElementById("header").style.display = "none";
-    document.getElementById("main").style.display = "none";
-}
-
-async function closeSettings(){
-    fontSize = parseInt(document.getElementById("font-size").value);
-    hyphenation = document.getElementById("hyphenation").checked ? "on" : "off";
-
-    try {
-        await chrome.storage.local.set({"Size": fontSize, "Hyphenation": hyphenation });
-        document.getElementById("settings-window").style.display = "none";
-    } catch (error) {}
-
-    document.querySelectorAll("textarea").forEach((textarea) => {
-        textarea.style.fontSize = `${fontSize}px`;
-        textarea.setAttribute("wrap", hyphenation);
-    });
-
-    document.getElementById("header").style.display = "flex";
-    document.getElementById("main").style.display = "flex";
-
-}
-
-function openDonateModal(){
-    chrome.tabs.create({ url: '../tabs/donate.html' });
-}
-
-function countTextarea(){
-    let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
-    document.getElementById("ch").innerHTML = chars;
-
-    let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
-    document.getElementById("ln").innerHTML = lines;
-}
-
-function exit(){
-    window.close();
-}
-
-//---Listeners---
-
-window.onload = function() {
-    displayNote();
-    loadSettings();
-}
-
-document.getElementById("add-btn").addEventListener("click", function(){
-    openEditor();
-});
-
-document.getElementById("del-all").addEventListener("click", function(){
-    delAll();
-});
-
-document.getElementById("donate-btn").addEventListener("click", function(){
-    openDonateModal();
-});
-
-document.getElementById("settings-btn").addEventListener("click", function(){
-    openSettings();
-});
-
-document.getElementById("apply-btn").addEventListener("click", function(){
-    closeSettings();
-});
-
-document.getElementById("exit-btn").addEventListener("click", function(){
-    exit();
-});
-
-document.getElementById("exit-editor-btn").addEventListener("click", function(){
-    closeEditor();
-});
-
-document.getElementById("exit-viewer-btn").addEventListener("click", function(){
-    closeViewer();
 });
 
 document.getElementById("save-btn").addEventListener("click", function(){
@@ -329,16 +224,52 @@ document.getElementById("save-btn").addEventListener("click", function(){
         return;
     }
 
-    addNote();
+    if(editingMode == false){
+        let date = new Date();
+
+        let text = document.getElementById("textarea").value;
+
+        let noteId = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
+
+        let note = {};
+        note[noteId] = text;
+
+        chrome.storage.local.set(note, function(){
+            chrome.storage.local.get("Count", function(result) {
+                let count = parseInt(result.Count) + 1;
+                chrome.storage.local.set({"Count": count}, function(){
+                    displayNote();
+                });
+            });
+        });
+    }else if(editingMode == true){
+
+        let text = document.getElementById("textarea").value;
+        let noteId = editID;
+
+        let note = {};
+        note[noteId] = text;
+
+        chrome.storage.local.set(note, function(){
+            displayNote();
+            editID = "";
+            editingMode = false;
+        });
+    }
+
     closeEditor();
 });
 
 document.getElementById("textarea").addEventListener("input", function(){
-    countTextarea();
+    let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
+    document.getElementById("ch").innerHTML = chars;
+
+    let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
+    document.getElementById("ln").innerHTML = lines;
 });
 
 document.getElementById("copy-viewer-text").addEventListener("click", function(){
-    copyViewerText();
+    navigator.clipboard.writeText(document.getElementById("textarea-readonly").value);
 });
 
 window.oncontextmenu = function(){
@@ -425,14 +356,36 @@ document.getElementById("select-context").addEventListener("click", function() {
 document.body.addEventListener("click", function(event) {
     if (event.target.classList.contains("delete")) {
         let id = event.target.parentNode.parentNode.id;
-        deleteNote(id);
+
+        chrome.storage.local.remove(id, function(){
+            chrome.storage.local.get("Count", function(result) {
+                let count = result.Count - 1;
+                chrome.storage.local.set({"Count": count}, function(){
+                    displayNote();
+                });
+            });
+        });
     }else if(event.target.classList.contains("view")){
         let id = event.target.parentNode.parentNode.id;
-        openViewer(id);
+
+        document.getElementById("viewer-window").style.display = "flex";
+        chrome.storage.local.get(id, function(result) {
+            document.getElementById("textarea-readonly").value = result[id];
+
+            let chars = document.getElementById("textarea-readonly").value.replace(/[\r\n]+/g, "").length;
+            document.getElementById("ch-total").innerHTML = chars;
+        
+            let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
+            document.getElementById("ln-total").innerHTML = lines;
+        });
+
+        document.getElementById("header").style.display = "none";
+        document.getElementById("main").style.display = "none";
     }else if(event.target.classList.contains("edit")){
         let id = event.target.parentNode.parentNode.id;
-        editNote(id);
+        editingMode = true; editID = id;
+        openEditor(id);
     }
 });
 
-//Yeah... That shit
+//NOTE: 09/14/2024 Okay, I've optimized the code a bit, but there's still more to do.
