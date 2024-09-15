@@ -268,7 +268,7 @@ document.getElementById("copy-viewer-text").addEventListener("click", function()
 });
 
 window.oncontextmenu = function(){
-    //return false;
+    return false;
 }
 
 document.getElementById("textarea").oncontextmenu = function (e) {
@@ -383,4 +383,3 @@ document.body.addEventListener("click", function(event) {
     }
 });
 
-//NOTE: 09/14/2024 Okay, I've optimized the code a bit, but there's still more to do.
