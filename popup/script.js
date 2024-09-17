@@ -138,7 +138,7 @@ document.getElementById("del-all").addEventListener("click", function(){
     getAllNotes(function(notes) {
         let keysToRemove = [];
         for (let noteId in notes) {
-            if (notes.hasOwnProperty(noteId) && noteId !== "Count") {
+            if (notes.hasOwnProperty(noteId) && noteId !== "Count" && noteId !== "Size" && noteId !== "Hyphenation" && noteId !== "editID" && noteId !== "editingMode") {
                 keysToRemove.push(noteId);
             }
         }
