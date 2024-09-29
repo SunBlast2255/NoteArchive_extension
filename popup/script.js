@@ -37,24 +37,58 @@ function displayNote(){
 
                                 let delIcon = document.createElement("img");
                                 delIcon.src = "../images/delete.png";
-                                delIcon.setAttribute("class", "icon-small delete");
+                                delIcon.setAttribute("class", "icon-small");
                                 delIcon.title = "Delete";
                                 delIcon.alt = "Del";
                                 icons.appendChild(delIcon);
+                                delIcon.addEventListener("click", function(e) {
+                                    let id = e.target.parentNode.parentNode.id;
+                                    chrome.storage.local.remove(id, function(){
+                                        chrome.storage.local.get("Count", function(result) {
+                                            let count = result.Count - 1;
+                                            chrome.storage.local.set({"Count": count}, function(){
+                                                displayNote();
+                                            });
+                                        });
+                                    });
+                                });
 
                                 let editIcon = document.createElement("img");
                                 editIcon.src = "../images/edit.png";
-                                editIcon.setAttribute("class", "icon-small edit");
+                                editIcon.setAttribute("class", "icon-small");
                                 editIcon.title = "Edit";
                                 editIcon.alt = "Edit";
                                 icons.appendChild(editIcon);
+                                editIcon.addEventListener("click", function(e) {
+                                    let id = e.target.parentNode.parentNode.id;
+                                    chrome.storage.local.set({"editingMode": true, "editID": id}, function(){});
+                                    openEditor(id);
+                                });
 
                                 let viewIcon = document.createElement("img");
                                 viewIcon.src = "../images/view.png";
-                                viewIcon.setAttribute("class", "icon-small view");
+                                viewIcon.setAttribute("class", "icon-small");
                                 viewIcon.title = "View";
                                 viewIcon.alt = "View";
                                 icons.appendChild(viewIcon);
+                                viewIcon.addEventListener("click", function(e) {
+                                    let id = e.target.parentNode.parentNode.id;
+
+                                    document.getElementById("viewer-window").style.display = "flex";
+                                    chrome.storage.local.get(id, function(result) {
+                                        document.getElementById("textarea-readonly").value = result[id];
+                            
+                                        let chars = document.getElementById("textarea-readonly").value.replace(/[\r\n]+/g, "").length;
+                                        document.getElementById("ch-total").innerHTML = chars;
+                                    
+                                        let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
+                                        document.getElementById("ln-total").innerHTML = lines;
+                                    });
+                            
+                                    document.getElementById("header").style.display = "none";
+                                    document.getElementById("main").style.display = "none"; 
+                                });
+
 
                                 document.getElementById("note-container").appendChild(div);
                             }
@@ -135,19 +169,8 @@ document.getElementById("add-btn").addEventListener("click", function(){
 });
 
 document.getElementById("del-all").addEventListener("click", function(){
-    getAllNotes(function(notes) {
-        let keysToRemove = [];
-        for (let noteId in notes) {
-            if (notes.hasOwnProperty(noteId) && noteId !== "Count" && noteId !== "Size" && noteId !== "Hyphenation" && noteId !== "editID" && noteId !== "editingMode") {
-                keysToRemove.push(noteId);
-            }
-        }
-        
-        chrome.storage.local.remove(keysToRemove, function() {
-            chrome.storage.local.set({"Count": 0}, function(){
-                displayNote();
-            });
-        });
+    chrome.storage.local.clear(function(){
+        displayNote();
     });
 });
 
@@ -346,40 +369,5 @@ document.getElementById("cut-context").addEventListener("click", async function(
 
 document.getElementById("select-context").addEventListener("click", function() {
     document.getElementById("textarea").select();
-});
-
-document.body.addEventListener("click", function(event) {
-    if (event.target.classList.contains("delete")) {
-        let id = event.target.parentNode.parentNode.id;
-
-        chrome.storage.local.remove(id, function(){
-            chrome.storage.local.get("Count", function(result) {
-                let count = result.Count - 1;
-                chrome.storage.local.set({"Count": count}, function(){
-                    displayNote();
-                });
-            });
-        });
-    }else if(event.target.classList.contains("view")){
-        let id = event.target.parentNode.parentNode.id;
-
-        document.getElementById("viewer-window").style.display = "flex";
-        chrome.storage.local.get(id, function(result) {
-            document.getElementById("textarea-readonly").value = result[id];
-
-            let chars = document.getElementById("textarea-readonly").value.replace(/[\r\n]+/g, "").length;
-            document.getElementById("ch-total").innerHTML = chars;
-        
-            let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
-            document.getElementById("ln-total").innerHTML = lines;
-        });
-
-        document.getElementById("header").style.display = "none";
-        document.getElementById("main").style.display = "none";
-    }else if(event.target.classList.contains("edit")){
-        let id = event.target.parentNode.parentNode.id;
-        chrome.storage.local.set({"editingMode": true, "editID": id}, function(){});
-        openEditor(id);
-    }
 });
 
