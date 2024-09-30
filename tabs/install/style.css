@@ -56,6 +56,7 @@ span{
 a{
     color: rgba(179, 212, 252);
     font-weight: bold;
+    text-decoration: none;
 }
 
 ::selection{
