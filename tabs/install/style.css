@@ -59,6 +59,6 @@ a{
 }
 
 ::selection{
-    background-color: rgba(179, 212, 252);
-    color: black;
+    background: rgba(179, 212, 252, 0.5); 
+    color: #FFFFFF;
 }

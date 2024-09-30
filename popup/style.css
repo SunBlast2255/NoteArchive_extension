@@ -271,7 +271,7 @@ img{
 
 /*Selection*/
 textarea::selection {
-    background: rgba(179, 212, 252, 0.5); /* Цвет фона с прозрачностью */
+    background: rgba(179, 212, 252, 0.5); 
     color: #FFFFFF;
 }
 

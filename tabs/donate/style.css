@@ -62,3 +62,8 @@ span{
     width: fit-content;
     font-size: 15px;
 }
+
+::selection{
+    background: rgba(179, 212, 252, 0.5); 
+    color: #FFFFFF;
+}
