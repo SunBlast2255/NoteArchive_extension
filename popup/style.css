@@ -309,6 +309,6 @@ textarea::selection {
 }
 
 .context-menu-item:hover{
-    color: white;
+    color: black;
     background-color: rgba(179, 212, 252);
 }

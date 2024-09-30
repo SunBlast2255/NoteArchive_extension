@@ -175,7 +175,7 @@ document.getElementById("del-all").addEventListener("click", function(){
 });
 
 document.getElementById("donate-btn").addEventListener("click", function(){
-    chrome.tabs.create({ url: '../tabs/donate.html' });
+    chrome.tabs.create({ url: '../tabs/donate/donate.html' });
 });
 
 document.getElementById("settings-btn").addEventListener("click", function(){
