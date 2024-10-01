@@ -9,13 +9,13 @@ body{
 }
 
 .wrapper{
-    width: 100vw;
-    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
     
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: safe center;
+    align-items: safe center;
 
     background-color: #323232;
     color: #D4D4D4;
@@ -24,7 +24,7 @@ body{
 .image-block{
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: safe center;
 }
 
 .flex{
@@ -32,8 +32,8 @@ body{
 }
 
 .center{
-    align-items: center;
-    justify-content: center;
+    align-items: safe center;
+    justify-content: safe center;
 }
 
 .column{

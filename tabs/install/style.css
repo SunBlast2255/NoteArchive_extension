@@ -14,31 +14,12 @@ body{
     
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: safe center;
+    align-items: safe center;
     gap: 10px;
 
     background-color: #323232;
     color: #D4D4D4;
-}
-
-.image-block{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.flex{
-    display: flex;
-}
-
-.center{
-    align-items: center;
-    justify-content: center;
-}
-
-.column{
-    flex-direction: column;
 }
 
 h1{
