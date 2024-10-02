@@ -47,7 +47,7 @@ h1{
 }
 
 span{
-    width: 450px;
+    max-width: 450px;
     font-size: 18px;
     text-align: center;
 }
