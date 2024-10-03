@@ -12,7 +12,7 @@
 
         <header id="header">
             <div class="title">
-                <h2>NoteArchive 1.6</h2>
+                <h2>NoteArchive 1.4.2</h2>
                 <span>Total notes: <span id="notes">0</span> </span>
             </div>
 
@@ -57,7 +57,8 @@
             <div class="header-modal">
                 <div class="flex center" style="gap: 10px;">
                     <img id="exit-viewer-btn" class="icon-big" title="Close" alt="Close" src="../images/close.png">
-                    <img id="copy-viewer-text" class="icon-big" title="Copy" alt="Copy" src="../images/copy.png">
+                    <img id="copy-viewer-text" class="icon-big" title="Copy All" alt="Copy-All" src="../images/copy.png">
+                    <img id="copy-selected-viewer-text" class="icon-big" title="Copy Selected" alt="Copy-Selected" src="../images/copy-selected.png">
                 </div>
 
                 <div class="flex center">
@@ -117,6 +118,17 @@
         </div>
         <div class="context-menu-item" id="select-context">
             <span>Select All</span>
+        </div>
+    </div>
+
+    <!--Context viewer-->
+
+    <div class="context-menu" id="context-viewer">
+        <div class="context-menu-item" id="copy-all-context">
+            <span>Copy All</span>
+        </div>
+        <div class="context-menu-item" id="copy-selected-context">
+            <span>Copy Selected</span>
         </div>
     </div>
 

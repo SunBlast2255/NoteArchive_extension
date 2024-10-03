@@ -140,6 +140,49 @@ function closeEditor(){
     document.getElementById("main").style.display = "flex";
 }
 
+function copyViewer(){
+    navigator.clipboard.writeText(document.getElementById("textarea-readonly").value);
+}
+
+function copyViewerSelected(){
+    var txtarea = document.getElementById("textarea-readonly");
+    var start = txtarea.selectionStart;
+    var finish = txtarea.selectionEnd;
+    var selected = txtarea.value.substring(start, finish);
+
+    navigator.clipboard.writeText(selected);
+}
+
+function openContextMenu(textareaID, contextID, e){
+    e.preventDefault();
+
+    let context = document.getElementById(contextID);
+    context.style.display = "flex";
+    
+    let clickX = e.pageX + 15;
+    let clickY = e.pageY + 15;
+
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    let menuWidth = context.offsetWidth;
+    let menuHeight = context.offsetHeight;
+
+    if ((clickX + menuWidth) > windowWidth) {
+        context.style.left = (windowWidth - menuWidth) + "px";
+    } else {
+        context.style.left = clickX + "px";
+    }
+
+    if ((clickY + menuHeight) > windowHeight) {
+        context.style.top = (windowHeight - menuHeight) + "px";
+    } else {
+        context.style.top = clickY + "px";
+    }
+
+    document.getElementById(textareaID).style.cursor = "default"
+}
+
 window.onload = function() {
     displayNote();
     
@@ -287,47 +330,31 @@ document.getElementById("textarea").addEventListener("input", function(){
 });
 
 document.getElementById("copy-viewer-text").addEventListener("click", function(){
-    navigator.clipboard.writeText(document.getElementById("textarea-readonly").value);
+    copyViewer();
+});
+
+document.getElementById("copy-selected-viewer-text").addEventListener("click", function(){
+    copyViewerSelected();
 });
 
 window.oncontextmenu = function(){
-    return false;
+    //return false;
 }
 
 document.getElementById("textarea").oncontextmenu = function (e) {
-    e.preventDefault();
+    openContextMenu("textarea", "context", e)
+};
 
-    let context = document.getElementById("context");
-
-    context.style.display = "flex";
-    
-    let clickX = e.pageX + 15;
-    let clickY = e.pageY + 15;
-
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-
-    let menuWidth = context.offsetWidth;
-    let menuHeight = context.offsetHeight;
-
-    if ((clickX + menuWidth) > windowWidth) {
-        context.style.left = (windowWidth - menuWidth) + "px";
-    } else {
-        context.style.left = clickX + "px";
-    }
-
-    if ((clickY + menuHeight) > windowHeight) {
-        context.style.top = (windowHeight - menuHeight) + "px";
-    } else {
-        context.style.top = clickY + "px";
-    }
-
-    document.getElementById("textarea").style.cursor = "default"
+document.getElementById("textarea-readonly").oncontextmenu = function (e) {
+    openContextMenu("textarea-readonly", "context-viewer", e)
 };
 
 window.onclick = function () {
     document.getElementById("context").style.display = "none";
     document.getElementById("textarea").style.cursor = "auto"
+
+    document.getElementById("context-viewer").style.display = "none";
+    document.getElementById("textarea-readonly").style.cursor = "auto"
 };
 
 document.getElementById("copy-context").addEventListener("click", function() {
@@ -371,3 +398,10 @@ document.getElementById("select-context").addEventListener("click", function() {
     document.getElementById("textarea").select();
 });
 
+document.getElementById("copy-all-context").addEventListener("click",  function() {
+    copyViewer();
+});
+
+document.getElementById("copy-selected-context").addEventListener("click", function() {
+    copyViewerSelected();
+});
