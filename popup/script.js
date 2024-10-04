@@ -332,8 +332,6 @@ document.getElementById("exit-viewer-btn").addEventListener("click", function(){
     document.getElementById("viewer-window").style.display = "none";
     document.getElementById("textarea-readonly").value = "";
 
-    resetCursorPositions("ln-viewer", "col-viewer");
-
     document.getElementById("header").style.display = "flex";
     document.getElementById("main").style.display = "flex";
 });
@@ -444,18 +442,6 @@ function resetCursorPositions(lnID, colID) {
     document.getElementById(lnID).textContent = "1";
     document.getElementById(colID).textContent = "0";
 }
-
-document.getElementById("textarea-readonly").addEventListener("click", function() {
-    getCursorPosition("textarea-readonly", "ln-viewer", "col-viewer");
-});
-
-document.getElementById("textarea-readonly").addEventListener("keydown", function(e) {
-    if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
-        setTimeout(function() {
-            getCursorPosition("textarea-readonly", "ln-viewer", "col-viewer");
-        }, 0);
-    }
-});
 
 document.getElementById("textarea").addEventListener("click", function() {
     getCursorPosition("textarea", "ln-editor", "col-editor");
