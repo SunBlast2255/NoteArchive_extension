@@ -140,17 +140,47 @@ function closeEditor(){
     document.getElementById("main").style.display = "flex";
 }
 
-function copyViewer(){
-    navigator.clipboard.writeText(document.getElementById("textarea-readonly").value);
+function copyAll(textareaID){
+    navigator.clipboard.writeText(document.getElementById(textareaID).value);
 }
 
-function copyViewerSelected(){
-    var txtarea = document.getElementById("textarea-readonly");
+function copySelected(textareaID){
+    var txtarea = document.getElementById(textareaID);
     var start = txtarea.selectionStart;
     var finish = txtarea.selectionEnd;
     var selected = txtarea.value.substring(start, finish);
 
     navigator.clipboard.writeText(selected);
+}
+
+async function pasteText(textareaID){
+    try {
+        let clipboardText = await navigator.clipboard.readText();
+        
+        let textarea = document.getElementById(textareaID);
+        let start = textarea.selectionStart;
+        let end = textarea.selectionEnd;
+
+        let currentValue = textarea.value;
+
+        textarea.value = currentValue.slice(0, start) + clipboardText + currentValue.slice(end);
+        
+        let newPosition = start + clipboardText.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+    } catch (err) {}
+}
+
+async function cutText(textareaID){
+    try {
+        let textarea = document.getElementById(textareaID);
+        let start = textarea.selectionStart;
+        let end = textarea.selectionEnd;
+        let cutText = textarea.value.slice(start, end);
+
+        await navigator.clipboard.writeText(cutText);
+        textarea.value = textarea.value.slice(0, start) + textarea.value.slice(end);
+        textarea.selectionStart = textarea.selectionEnd = start;
+    } catch (err) {}
 }
 
 function openContextMenu(textareaID, contextID, e){
@@ -183,6 +213,10 @@ function openContextMenu(textareaID, contextID, e){
     document.getElementById(textareaID).style.cursor = "default"
 }
 
+function selectAll(){
+    document.getElementById("textarea").select();
+}
+
 window.onload = function() {
     displayNote();
     
@@ -207,6 +241,8 @@ window.onload = function() {
     chrome.storage.local.set({"editID": "", "editingMode": false}, function(){});
 }
 
+//Main panel
+
 document.getElementById("add-btn").addEventListener("click", function(){
     openEditor();
 });
@@ -220,6 +256,12 @@ document.getElementById("del-all").addEventListener("click", function(){
 document.getElementById("donate-btn").addEventListener("click", function(){
     chrome.tabs.create({ url: '../tabs/donate/donate.html' });
 });
+
+document.getElementById("exit-btn").addEventListener("click", function(){
+    window.close();
+});
+
+//settings
 
 document.getElementById("settings-btn").addEventListener("click", function(){
     chrome.storage.local.get(["Size", "Hyphenation"], function(result){
@@ -254,23 +296,10 @@ document.getElementById("reset-settings").addEventListener("click", function(){
     document.getElementById("hyphenation").checked = false;
 });
 
-document.getElementById("exit-btn").addEventListener("click", function(){
-    window.close();
-});
+//editor panel
 
 document.getElementById("exit-editor-btn").addEventListener("click", function(){
     closeEditor();
-});
-
-document.getElementById("exit-viewer-btn").addEventListener("click", function(){
-    document.getElementById("viewer-window").style.display = "none";
-    document.getElementById("textarea-readonly").value = "";
-
-    document.getElementById("ch-total").innerHTML = "0";
-    document.getElementById("ln-total").innerHTML = "0";
-
-    document.getElementById("header").style.display = "flex";
-    document.getElementById("main").style.display = "flex";
 });
 
 document.getElementById("save-btn").addEventListener("click", function(){
@@ -321,6 +350,22 @@ document.getElementById("save-btn").addEventListener("click", function(){
     });
 });
 
+document.getElementById("copy-btn-editor").addEventListener("click", function(){
+    copySelected("textarea")
+});
+
+document.getElementById("paste-btn-editor").addEventListener("click", function(){
+    pasteText("textarea");
+});
+
+document.getElementById("cut-btn-editor").addEventListener("click", function(){
+    cutText("textarea");
+});
+
+document.getElementById("select-btn-editor").addEventListener("click", function(){
+    selectAll();
+});
+
 document.getElementById("textarea").addEventListener("input", function(){
     let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
     document.getElementById("ch").innerHTML = chars;
@@ -329,13 +374,28 @@ document.getElementById("textarea").addEventListener("input", function(){
     document.getElementById("ln").innerHTML = lines;
 });
 
+// viewer panel
+
+document.getElementById("exit-viewer-btn").addEventListener("click", function(){
+    document.getElementById("viewer-window").style.display = "none";
+    document.getElementById("textarea-readonly").value = "";
+
+    document.getElementById("ch-total").innerHTML = "0";
+    document.getElementById("ln-total").innerHTML = "0";
+
+    document.getElementById("header").style.display = "flex";
+    document.getElementById("main").style.display = "flex";
+});
+
 document.getElementById("copy-viewer-text").addEventListener("click", function(){
-    copyViewer();
+    copyAll("textarea-readonly");
 });
 
 document.getElementById("copy-selected-viewer-text").addEventListener("click", function(){
-    copyViewerSelected();
+    copySelected("textarea-readonly");
 });
+
+//context
 
 window.oncontextmenu = function(){
     return false;
@@ -358,50 +418,25 @@ window.onclick = function () {
 };
 
 document.getElementById("copy-context").addEventListener("click", function() {
-    let textarea = document.getElementById("textarea");
-    let selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-
-    navigator.clipboard.writeText(selectedText);
+    copySelected("textarea");
 });
 
 document.getElementById("paste-context").addEventListener("click", async function() {
-    try {
-        let clipboardText = await navigator.clipboard.readText();
-        
-        let textarea = document.getElementById('textarea');
-        let start = textarea.selectionStart;
-        let end = textarea.selectionEnd;
-
-        let currentValue = textarea.value;
-
-        textarea.value = currentValue.slice(0, start) + clipboardText + currentValue.slice(end);
-        
-        let newPosition = start + clipboardText.length;
-        textarea.setSelectionRange(newPosition, newPosition);
-    } catch (err) {}
+    pasteText("textarea");
 });
 
 document.getElementById("cut-context").addEventListener("click", async function() {
-    try {
-        let textarea = document.getElementById('textarea');
-        let start = textarea.selectionStart;
-        let end = textarea.selectionEnd;
-        let cutText = textarea.value.slice(start, end);
-
-        await navigator.clipboard.writeText(cutText);
-        textarea.value = textarea.value.slice(0, start) + textarea.value.slice(end);
-        textarea.selectionStart = textarea.selectionEnd = start;
-    } catch (err) {}
+    cutText("textarea");
 });
 
 document.getElementById("select-context").addEventListener("click", function() {
-    document.getElementById("textarea").select();
+    selectAll();
 });
 
 document.getElementById("copy-all-context").addEventListener("click",  function() {
-    copyViewer();
+    copyAll("textarea-readonly");
 });
 
 document.getElementById("copy-selected-context").addEventListener("click", function() {
-    copyViewerSelected();
+    copySelected("textarea-readonly");
 });
