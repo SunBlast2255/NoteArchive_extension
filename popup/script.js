@@ -428,16 +428,16 @@ function getCursorPosition(textareaID, lnID, colID) {
     const textarea = document.getElementById(textareaID);
     const lnSpan = document.getElementById(lnID);
     const colSpan = document.getElementById(colID);
-    
+
     const position = textarea.selectionStart;
     const textBeforeCursor = textarea.value.slice(0, position);
-    
-    const lines = textBeforeCursor.split("\n");
-    const row = lines.length;
-    const col = lines[lines.length - 1].length + 1;
 
-    lnSpan.innerHTML = row;
-    colSpan.innerHTML = col;
+    const lines = textBeforeCursor.split('\n');
+    const row = lines.length;
+    const col = position - textBeforeCursor.lastIndexOf('\n');
+
+    lnSpan.textContent = row;
+    colSpan.textContent = col;
 }
 
 function resetCursorPositions(lnID, colID) {
@@ -451,7 +451,9 @@ document.getElementById("textarea-readonly").addEventListener("click", function(
 
 document.getElementById("textarea-readonly").addEventListener("keydown", function(e) {
     if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
-        getCursorPosition("textarea-readonly", "ln-viewer", "col-viewer");
+        setTimeout(function() {
+            getCursorPosition("textarea-readonly", "ln-viewer", "col-viewer");
+        }, 0);
     }
 });
 
@@ -465,6 +467,8 @@ document.getElementById("textarea").addEventListener("input", function() {
 
 document.getElementById("textarea").addEventListener("keydown", function(e) {
     if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
-        getCursorPosition("textarea", "ln-editor", "col-editor");
+        setTimeout(function() {
+            getCursorPosition("textarea", "ln-editor", "col-editor");
+        }, 0);
     }
 });
