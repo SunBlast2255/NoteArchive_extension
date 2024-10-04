@@ -23,23 +23,27 @@ You can download the extension in the release section.
 - Select the folder and click Select Folder (or Open).
   
 # What's in here?
-When you first open the extension, you'll see a button on the bottom left to add a new note. 
-On the top right you will see a counter for your notes. And on the top left you will see 
-the name of the extension and the current version.
+When you first open the extension, on the top right you will see buttons for. 
+Opposite the buttons, on the left, you'll see a note counter, as well as the name and current version of the extension
 
-Still at the top you will see 4 buttons.
+Still at the top you will see 5 buttons.
 
 - Create: creates a new note
 - Delete All: deletes all notes
 - Settings: opens settings
+- Donate: will open a page with the cryptocurrency wallet address for donations
 - Exit: closes the extension
 
+# Creating a new note
+
 When you click the create button, you will open the built-in editor where there is a line 
-counter, character counter and two buttons to save, exit and input field.Just type the text 
+counter, character counter and two buttons to save, exit and input field. Just type the text 
 in the input box and click save to save the note. If you want to exit without saving, press 
 exit. *In this case the data will not be saved.
 
-There are 2 parameters in the settings. The first one sets the size of the text in the editor. Write any value in pixels there. The second parameter is responsible for word transposition in the editor.
+To close the editor without saving, click on the cross in the upper left corner.
+
+# Editing an existing note
 
 Each note has 3 buttons. 
 
@@ -47,9 +51,24 @@ Each note has 3 buttons.
 - Edit
 - Delete
 
-If you click on the view button, it will open the note view window where you can view the whole text. If you click on the edit button, the editor opens where you can edit the text. To delete a note, click the delete button.
+Click the pencil icon next to the note you want to edit. 
+This will open the same text editor that you have already seen when creating a new note. Edit the note and click save.
+
+To close the editor without saving, click on the cross in the upper left corner.
+
+# Note view mode
+
+Click the magnifying glass icon on the note you want to view. This will open a view where editing is not possible. All you can do is copy the whole note or just the highlighted one. 
+
+To copy the whole note, click the copy all button on the top panel or in the context menu (see working with the context menu). To copy a selected area, select what you are interested in and click the copy selected button on the top panel or in the context menu. You can also use Ctrl + C
+
+To close the view of the note, click on the cross in the upper left corner.
 
 # Working with the context menu
+
+The contex menu of the view and edit modes have different functionality.
+
+## Context menu in editor
 
 In edit mode, you can open the context menu by right-clicking anywhere in the input field. It has several functions:
 
@@ -59,3 +78,15 @@ In edit mode, you can open the context menu by right-clicking anywhere in the in
 - Select All
 
 To select a function, simply click on it in the context menu. Click anywhere to close the context menu.
+
+## Context meny in viewer
+
+Unlike the editor, the context menu has only 2 functions. In fact, it duplicates the top panel. 
+
+- Copy all. Just open the context menu by clicking on the input field and click copy all. This will copy the text of the entire note to the clipboard
+
+- Copy selected text. Select the text, open the context menu and click copy selected text. After that the highlighted area will be copied to the clipboard.
+
+# Settings
+
+There are 2 parameters in the settings. The first one sets the size of the text in the editor. Write there any value in pixels. The second parameter is responsible for word transposition in the editor. To reset the settings, press the reset settings button.
