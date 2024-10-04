@@ -34,6 +34,9 @@ Still at the top you will see 5 buttons.
 - Donate: will open a page with the cryptocurrency wallet address for donations
 - Exit: closes the extension
 
+> [!TIP]
+> If you don't understand what a particular button does, hover over it with the mouse and wait 1 second. A tooltip will appear next to the button.
+
 # Creating a new note
 
 When you click the create button, you will open the built-in editor where there is a line 
