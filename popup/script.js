@@ -338,7 +338,7 @@ document.getElementById("copy-selected-viewer-text").addEventListener("click", f
 });
 
 window.oncontextmenu = function(){
-    //return false;
+    return false;
 }
 
 document.getElementById("textarea").oncontextmenu = function (e) {
