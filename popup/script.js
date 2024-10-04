@@ -77,12 +77,6 @@ function displayNote(){
                                     document.getElementById("viewer-window").style.display = "flex";
                                     chrome.storage.local.get(id, function(result) {
                                         document.getElementById("textarea-readonly").value = result[id];
-                            
-                                        let chars = document.getElementById("textarea-readonly").value.replace(/[\r\n]+/g, "").length;
-                                        document.getElementById("ch-total").innerHTML = chars;
-                                    
-                                        let lines = document.getElementById("textarea-readonly").value.split(/\r\n|\r|\n/).length;
-                                        document.getElementById("ln-total").innerHTML = lines;
                                     });
                             
                                     document.getElementById("header").style.display = "none";
@@ -106,39 +100,7 @@ function getAllNotes(callback){
     });
 }
 
-function openEditor(id){
-
-    document.getElementById("editor-window").style.display = "flex";
-    
-    if(id){
-        chrome.storage.local.get(id, function(result) {
-            document.getElementById("textarea").value = result[id];
-
-            let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
-            document.getElementById("ch").innerHTML = chars;
-        
-            let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
-            document.getElementById("ln").innerHTML = lines;
-        });
-    }else{
-        document.getElementById("textarea").value = "";
-    }
-
-    document.getElementById("header").style.display = "none";
-    document.getElementById("main").style.display = "none";
-}
-
-function closeEditor(){
-    document.getElementById("textarea").value = "";
-    document.getElementById("ch").innerHTML = "0";
-    document.getElementById("ln").innerHTML = "1";
-    document.getElementById("editor-window").style.display = "none";
-
-    chrome.storage.local.set({"editID": "", "editingMode": false}, function(){});
-
-    document.getElementById("header").style.display = "flex";
-    document.getElementById("main").style.display = "flex";
-}
+//Text
 
 function copyAll(textareaID){
     navigator.clipboard.writeText(document.getElementById(textareaID).value);
@@ -183,36 +145,6 @@ async function cutText(textareaID){
     } catch (err) {}
 }
 
-function openContextMenu(textareaID, contextID, e){
-    e.preventDefault();
-
-    let context = document.getElementById(contextID);
-    context.style.display = "flex";
-    
-    let clickX = e.pageX + 15;
-    let clickY = e.pageY + 15;
-
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-
-    let menuWidth = context.offsetWidth;
-    let menuHeight = context.offsetHeight;
-
-    if ((clickX + menuWidth) > windowWidth) {
-        context.style.left = (windowWidth - menuWidth) + "px";
-    } else {
-        context.style.left = clickX + "px";
-    }
-
-    if ((clickY + menuHeight) > windowHeight) {
-        context.style.top = (windowHeight - menuHeight) + "px";
-    } else {
-        context.style.top = clickY + "px";
-    }
-
-    document.getElementById(textareaID).style.cursor = "default"
-}
-
 function selectAll(){
     document.getElementById("textarea").select();
 }
@@ -254,14 +186,14 @@ document.getElementById("del-all").addEventListener("click", function(){
 });
 
 document.getElementById("donate-btn").addEventListener("click", function(){
-    chrome.tabs.create({ url: '../tabs/donate/donate.html' });
+    chrome.tabs.create({ url: "../tabs/donate/donate.html" });
 });
 
 document.getElementById("exit-btn").addEventListener("click", function(){
     window.close();
 });
 
-//settings
+//Settings
 
 document.getElementById("settings-btn").addEventListener("click", function(){
     chrome.storage.local.get(["Size", "Hyphenation"], function(result){
@@ -296,7 +228,35 @@ document.getElementById("reset-settings").addEventListener("click", function(){
     document.getElementById("hyphenation").checked = false;
 });
 
-//editor panel
+//Editor panel
+
+function openEditor(id){
+
+    document.getElementById("editor-window").style.display = "flex";
+    
+    if(id){
+        chrome.storage.local.get(id, function(result) {
+            document.getElementById("textarea").value = result[id];
+            getCursorPosition("textarea", "ln-editor", "col-editor");
+        });
+    }else{
+        document.getElementById("textarea").value = "";
+    }
+
+    document.getElementById("header").style.display = "none";
+    document.getElementById("main").style.display = "none";
+}
+
+function closeEditor(){
+    document.getElementById("textarea").value = "";
+    resetCursorPositions("ln-editor", "col-editor");
+    document.getElementById("editor-window").style.display = "none";
+
+    chrome.storage.local.set({"editID": "", "editingMode": false}, function(){});
+
+    document.getElementById("header").style.display = "flex";
+    document.getElementById("main").style.display = "flex";
+}
 
 document.getElementById("exit-editor-btn").addEventListener("click", function(){
     closeEditor();
@@ -366,22 +326,13 @@ document.getElementById("select-btn-editor").addEventListener("click", function(
     selectAll();
 });
 
-document.getElementById("textarea").addEventListener("input", function(){
-    let chars = document.getElementById("textarea").value.replace(/[\r\n]+/g, "").length;
-    document.getElementById("ch").innerHTML = chars;
-
-    let lines = document.getElementById("textarea").value.split(/\r\n|\r|\n/).length;
-    document.getElementById("ln").innerHTML = lines;
-});
-
-// viewer panel
+//Viewer panel
 
 document.getElementById("exit-viewer-btn").addEventListener("click", function(){
     document.getElementById("viewer-window").style.display = "none";
     document.getElementById("textarea-readonly").value = "";
 
-    document.getElementById("ch-total").innerHTML = "0";
-    document.getElementById("ln-total").innerHTML = "0";
+    resetCursorPositions("ln-viewer", "col-viewer");
 
     document.getElementById("header").style.display = "flex";
     document.getElementById("main").style.display = "flex";
@@ -395,10 +346,40 @@ document.getElementById("copy-selected-viewer-text").addEventListener("click", f
     copySelected("textarea-readonly");
 });
 
-//context
+//Context
 
 window.oncontextmenu = function(){
-    return false;
+    //return false;
+}
+
+function openContextMenu(textareaID, contextID, e){
+    e.preventDefault();
+
+    let context = document.getElementById(contextID);
+    context.style.display = "flex";
+    
+    let clickX = e.pageX + 15;
+    let clickY = e.pageY + 15;
+
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    let menuWidth = context.offsetWidth;
+    let menuHeight = context.offsetHeight;
+
+    if ((clickX + menuWidth) > windowWidth) {
+        context.style.left = (windowWidth - menuWidth) + "px";
+    } else {
+        context.style.left = clickX + "px";
+    }
+
+    if ((clickY + menuHeight) > windowHeight) {
+        context.style.top = (windowHeight - menuHeight) + "px";
+    } else {
+        context.style.top = clickY + "px";
+    }
+
+    document.getElementById(textareaID).style.cursor = "default"
 }
 
 document.getElementById("textarea").oncontextmenu = function (e) {
@@ -439,4 +420,51 @@ document.getElementById("copy-all-context").addEventListener("click",  function(
 
 document.getElementById("copy-selected-context").addEventListener("click", function() {
     copySelected("textarea-readonly");
+});
+
+//Cursor position
+
+function getCursorPosition(textareaID, lnID, colID) {
+    const textarea = document.getElementById(textareaID);
+    const lnSpan = document.getElementById(lnID);
+    const colSpan = document.getElementById(colID);
+    
+    const position = textarea.selectionStart;
+    const textBeforeCursor = textarea.value.slice(0, position);
+    
+    const lines = textBeforeCursor.split("\n");
+    const row = lines.length;
+    const col = lines[lines.length - 1].length + 1;
+
+    lnSpan.innerHTML = row;
+    colSpan.innerHTML = col;
+}
+
+function resetCursorPositions(lnID, colID) {
+    document.getElementById(lnID).textContent = "1";
+    document.getElementById(colID).textContent = "0";
+}
+
+document.getElementById("textarea-readonly").addEventListener("click", function() {
+    getCursorPosition("textarea-readonly", "ln-viewer", "col-viewer");
+});
+
+document.getElementById("textarea-readonly").addEventListener("keydown", function(e) {
+    if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+        getCursorPosition("textarea-readonly", "ln-viewer", "col-viewer");
+    }
+});
+
+document.getElementById("textarea").addEventListener("click", function() {
+    getCursorPosition("textarea", "ln-editor", "col-editor");
+});
+
+document.getElementById("textarea").addEventListener("input", function() {
+    getCursorPosition("textarea", "ln-editor", "col-editor");
+});
+
+document.getElementById("textarea").addEventListener("keydown", function(e) {
+    if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+        getCursorPosition("textarea", "ln-editor", "col-editor");
+    }
 });
