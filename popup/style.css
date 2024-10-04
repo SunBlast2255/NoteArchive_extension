@@ -88,12 +88,12 @@ main, .modal-main {
 .note-container{
     display: flex;
     justify-content: center;
-    align-self: center;
+    align-items: center;
     flex-wrap: wrap;
     overflow: auto;
 
     width: 100%;
-    height: fit-content;
+    height: 100%;
     max-height: 100%;
 }
 

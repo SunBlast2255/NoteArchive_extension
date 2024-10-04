@@ -1,18 +1,26 @@
 function displayNote(){
     chrome.storage.local.get(["Count"]).then((result) => {
         if(result.Count == 0 || result.Count == undefined || result.Count == null){
-            document.getElementById("note-container").innerHTML = "";
+            const container = document.getElementById("note-container");
+            container.innerHTML = "";
+            container.style.alignItems = "center";
+            container.style.justifyContent = "center";
+
             document.getElementById("notes").innerHTML = "0";
 
             let span = document.createElement("span");
             span.innerHTML = "You have no notes";
             span.style = "margin: 5px; font-size: 16px; color: #D4D4D4;"
-            document.getElementById("note-container").appendChild(span);
+            container.appendChild(span);
 
             chrome.storage.local.set({"Count": "0" }, function(){});
 
         }else if(result.Count > 0 && result.Count != undefined && result.Count != null){
-            document.getElementById("note-container").innerHTML = "";
+            const container = document.getElementById("note-container");
+            container.innerHTML = "";
+            container.style.alignItems = "start";
+            container.style.justifyContent = "start";
+
 
             let count;
 
