@@ -18,8 +18,8 @@ function displayNote(){
         }else if(result.Count > 0 && result.Count != undefined && result.Count != null){
             const container = document.getElementById("note-container");
             container.innerHTML = "";
-            container.style.alignItems = "start";
-            container.style.justifyContent = "start";
+            container.style.alignItems = "flex-start";
+            container.style.justifyContent = "center";
 
 
             let count;
@@ -355,7 +355,7 @@ document.getElementById("copy-selected-viewer-text").addEventListener("click", f
 //Context
 
 window.oncontextmenu = function(){
-    return false;
+    //return false;
 }
 
 function openContextMenu(textareaID, contextID, e){

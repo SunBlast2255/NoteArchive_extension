@@ -13,7 +13,7 @@ body{
 
 .wrapper{
     width: 100%;
-    height: 100vh;
+    height: 100%;
 }
 
 header{
@@ -51,7 +51,7 @@ main, .modal-main {
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-self: center;
     justify-content: start;
     overflow: hidden;
 
@@ -93,7 +93,7 @@ main, .modal-main {
     overflow: auto;
 
     width: 100%;
-    height: 100%;
+    height: fit-content;
     max-height: 100%;
 }
 
@@ -229,7 +229,6 @@ img{
 
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
 
     position: relative;
     margin: 5px;
