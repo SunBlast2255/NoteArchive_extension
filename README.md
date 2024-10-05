@@ -69,7 +69,7 @@ To close the view of the note, click on the cross in the upper left corner.
 
 # Working with the context menu
 
-The contex menu of the view and edit modes have different functionality.
+The context menu of the view and edit modes have different functionality.
 
 ## Context menu in editor
 
